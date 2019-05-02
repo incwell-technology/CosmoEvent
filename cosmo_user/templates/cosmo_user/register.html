@@ -1,0 +1,12 @@
+{% if messages %}
+    {% include 'cosmo_user/notification.html' %}
+{% endif %}
+<form method="POST">
+{% csrf_token %}
+firstname<input type="text" name="first_name"/>
+lastname<input type="text" name="last_name"/>
+email<input type="email" name="email"/>
+username<input type="text" name="username"/>
+password<input type="password" name="password"/>
+<button type="submit">Register</button>
+</form>
