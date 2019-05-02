@@ -1,4 +1,20 @@
 Not verified
+{% if messages %}
+    {% for msg in messages %}
+            {% if msg.tags == "2 success" %}
+                {{msg}}
+            {% endif %}
+            {% if msg.tags == "0 success" %}
+                {{msg}}
+                <button>Resend Code</button>        
+            {% endif %}
+    {% endfor %}
+{% endif %}
+<form action="{% url 'verify-user' %}" method="POST">
+{% csrf_token %}
+    <input type="number" name="code"/>
+    <button type="submit">Verify</button>
+</form>
 
 <form action="{% url 'user-logout' %}" method="post">
     {% csrf_token %}

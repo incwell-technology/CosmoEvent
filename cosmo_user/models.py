@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from datetime import datetime
 
 class CosmoUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
@@ -8,6 +8,7 @@ class CosmoUser(models.Model):
     votingCount = models.IntegerField(null=False, blank=False, default=25)
     verified = models.BooleanField(null=False, blank=False, default=False) #False = not verified
     token = models.IntegerField(null=False, blank=False)
+    expiry = models.DateTimeField(default=datetime.now())
 
 
     def __str__(self):
