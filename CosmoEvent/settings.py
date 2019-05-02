@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cosmo_user'
+    'cosmo_user',
+    'cosmo_manager'
 ]
 
 MIDDLEWARE = [

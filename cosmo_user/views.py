@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from cosmo_user import models as cosmo_models
 
 
 def user_login(request):
@@ -19,7 +20,9 @@ def user_login(request):
             return render(request, 'cosmo_user/login.html', {'message': 'Invalid Credentials'})
         else:
             login(request, user)
-            
+            cosmo_user = cosmo_models.CosmoUser.objects.get(user=user)
+            if not cosmo_user.verified:
+                return HttpResponseRedirect(reverse('not-verified-index'))
             return HttpResponseRedirect(reverse('user-index'))
 
 
@@ -92,7 +95,7 @@ def user_register(request):
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('user-login'))
-    print('Yay!!! I am logged in .....')
-    return HttpResponseRedirect(reverse('leave_manager_dashboard'))
+
+    return HttpResponseRedirect(reverse('verified-user-view'))
 
 
