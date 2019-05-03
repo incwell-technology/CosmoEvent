@@ -146,3 +146,6 @@ def verification(request):
     else:
         messages.success(request,"Code does not matched. Please try again.", extra_tags="2")
         return HttpResponseRedirect(reverse('not-verified-index'))
+
+
+    

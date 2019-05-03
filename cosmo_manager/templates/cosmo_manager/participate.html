@@ -1,0 +1,43 @@
+{% if error %}
+    {% for err in error %}
+        {{err}}
+    {% endfor %}
+{% endif %}
+{% if form.errors %}
+    <div id="errors">
+        <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" style="margin-right:20px;" data-dismiss="alert" aria-label="close">&times;</a>
+            {{ form.non_field_errors }}
+            <ul>
+                {% for field in form %}
+                    {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+<form name="participate-form" method="POST"  enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+        {% if forloop.counter0|divisibleby:3 %}
+            <div class="row">
+        {% endif %}
+            <div class="col-md-4">
+                <label>{{field.label_tag}}</label>
+                    {{field}} 
+            </div>
+            
+        {% if forloop.counter|divisibleby:3 %}
+        </div>
+        {% endif %} 
+    {% endfor %}
+
+    youtube link<input type="text" name="youtube_link"/>
+    Secondary Phone<input type="number" name="secondary_phone"/>
+    Terms and Conditions<input type="checkbox" id="terms"/>
+    <button type="submit" id="participate">Participate</button>
+</form>
+
+<script>
+window.addEventListener()
+</script>
