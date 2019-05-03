@@ -7,5 +7,5 @@ def is_verified(cosmo_user):
         return False
 
 
-def register_participant(request):
-    cosmo_user = cosmo_model.CosmoUser.objects.filter(user=request.user)
+
+    

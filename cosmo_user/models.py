@@ -4,7 +4,6 @@ from datetime import datetime
 
 class CosmoUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
-    photo = models.FileField(upload_to='cosmo_user/static/cosmo_user/site-data/profile-pictures', blank=True)
     votingCount = models.IntegerField(null=False, blank=False, default=25)
     verified = models.BooleanField(null=False, blank=False, default=False) #False = not verified
     token = models.IntegerField(null=False, blank=False)
@@ -17,6 +16,7 @@ class CosmoUser(models.Model):
 
 class Participant(models.Model):
     cosmo_user = models.OneToOneField(CosmoUser, on_delete=models.CASCADE, related_name="cosmo_participant")
+    photo = models.ImageField(upload_to='cosmo_user/static/cosmo_user/site-data/profile-pictures', null=False, blank=False)
     link = models.CharField(max_length=800, null=False, blank=False)
     voteVideo_link = models.CharField(max_length=800, null=True, blank=True)
     vote = models.IntegerField(null=False, blank=False, default=0)

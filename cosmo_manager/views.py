@@ -7,7 +7,7 @@ from cosmo_manager.common import cosmo_manager
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib import messages
-
+from .forms import ParticipantForm
 
 
 def verified_user_view(request):
@@ -57,6 +57,7 @@ def participate(request):
                     else:
                         return HttpResponseRedirect(reverse('not-verified-index'))
                 else:
+                    form = ParticipantForm(request.POST, request.FILES)
                     error = []
                     if request.POST.get('photo') == "":
                         error.append('Photo field is required.')
@@ -65,18 +66,34 @@ def participate(request):
                     
                     if error:
                         context.update({'error':error})
+                        form = ParticipantForm()
+                        context.update({'form':form})
                         return render(request, "cosmo_manager/participate.html", context=context)
                     else:
-                        if cosmo_manager.register_participant(request):
-                            messages.success(request, "Congratulations. You have successfully participated in Cosmo Event. Thank You.")
-                        else:
+                        try:
+                            if form.is_valid():
+                                participant_user = form.save(commit=False)
+                                participant_user.cosmo_user = cosmo_user
+                                participant_user.link = request.POST['youtube_link']
+                                if request.POST['secondary_phone']:
+                                    participant_user.secondaryPhone = request.POST['secondary_phone']
+                                participant_user.save()
+                                messages.success(request, "Congratulations. You have successfully participated in Cosmo Event. Thank You.", extra_tags="1")
+                            else:
+                                context.update({'form':form})
+                                return render(request, "cosmo_manager/participate.html", context=context)
+                        except Exception as e:
+                            print(e)
                             messages.success(request, "Sorry. There was a problem on participating. Please try again")
+
                         if cosmo_manager.is_verified(cosmo_user):
                             return HttpResponseRedirect(reverse('verified-user-view'))
                         else:
                             return HttpResponseRedirect(reverse('not-verified-index'))
             else:
-                return render(request, "cosmo_manager/participate.html")
+                form = ParticipantForm()
+                context.update({'form':form})
+                return render(request, "cosmo_manager/participate.html", context=context)
         else:
             return HttpResponseRedirect(reverse('not-verified-index'))
             
