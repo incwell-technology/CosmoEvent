@@ -45,28 +45,59 @@ def user_register(request):
         return render(request, 'cosmo_user/register.html')
 
     if request.method == 'POST':
+        error = []
+        context = {}
+        context.update({'first_name':request.POST['first_name']})
+        context.update({'last_name':request.POST['last_name']})
+        context.update({'phone':request.POST['phone']})
+        if request.POST['email'] == "":
+            error.append('Email field is required.')
+
+        if request.POST['first_name'] == "":
+            error.append('First Name is required.')
+
+        if request.POST['last_name'] == "":
+            error.append('Last Name is required.')
+
+        if request.POST['username'] == "":
+            error.append('Username field is required.')
+
+        if request.POST['password'] == "":
+            error.append('Password field is required.')
+
+        if request.POST['phone'] == "":
+            error.append('Phone number field is required.')
+
         if User.objects.filter(email=request.POST['email']).exists():
-            messages.success(request, "User with this email alerady exists.", extra_tags="0")
-            context = {}
-            context.update({'first_name':request.POST['first_name']})
-            context.update({'last_name':request.POST['last_name']})
+            error.append('User with this email id already exists.')
             context.update({'username':request.POST['username']})
-            return render(request, "cosmo_user/register.html", context=context)
-        elif User.objects.filter(username=request.POST['username']).exists():
-            messages.success(request, "Please choose different username.", extra_tags="0")
-            context = {}
-            context.update({'first_name':request.POST['first_name']})
-            context.update({'last_name':request.POST['last_name']})
+        
+        if User.objects.filter(username=request.POST['username']).exists():
+            error.append('Choose another username.')
             context.update({'email':request.POST['email']})
+        
+        if len(request.POST['password'])<8:
+            error.append('Password must be atleast 8 character long.')
+        
+        if len(request.POST['phone'])<7:
+            error.append('Phone number must be atleast 7 character long.')
+
+        if error:
+            context.update({'error':error})
             return render(request, "cosmo_user/register.html", context=context)
         else:
             try:
                 if register_user.register_django_user(request):
                     user = User.objects.get(username=request.POST['username'])
                     
-                    if register_user.register_cosmo_user(user=user):
+                    if register_user.register_cosmo_user(user=user, phone=request.POST['phone']):
                         messages.success(request, "You have been successfully register.", extra_tags="1")
-                        return HttpResponseRedirect(reverse('user-index'))
+                        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+                        if user:
+                            login(request, user)
+                            return HttpResponseRedirect(reverse('not-verified-index'))
+                        else:
+                            return HttpResponseRedirect(reverse('user-index'))
                     else:
                         try:
                             user.delete()

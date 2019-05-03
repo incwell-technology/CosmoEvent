@@ -16,9 +16,9 @@ def register_django_user(request):
         print(e)
         return False
 
-def register_cosmo_user(user):
+def register_cosmo_user(user, phone):
         try:
-            cosmo_models.CosmoUser.objects.create(user=user, votingCount=25,verified=False,token=2580,expiry=datetime.now())
+            cosmo_models.CosmoUser.objects.create(user=user, primaryPhone=phone, votingCount=25,verified=False,token=2580,expiry=datetime.now())
             return True
         except Exception as e:
             print(e)
