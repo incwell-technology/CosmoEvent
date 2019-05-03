@@ -1,0 +1,17 @@
+{% if error %}
+    {% for err in error %}
+        {{err}}
+    {% endfor %}
+{% endif %}
+<form name="participate-form" method="POST"  enctype="multipart/form-data">
+{% csrf_token %}
+    Photo <input type="file" name="photo"/>
+    youtube link<input type="text" name="youtube_link"/>
+    Secondary Phone<input type="number" name="secondary_phone"/>
+    Terms and Conditions<input type="checkbox" id="terms"/>
+    <button type="submit" id="participate">Participate</button>
+</form>
+
+<script>
+window.addEventListener()
+</script>
