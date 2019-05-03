@@ -1,0 +1,18 @@
+{% if messages %}
+    {% include 'cosmo_user/notification.html' %}
+{% endif %}
+{% if error %}
+    {% for err in error %}
+        {{err}}
+    {% endfor %}
+{% endif %}
+<form method="POST">
+{% csrf_token %}
+firstname<input type="text" {% if first_name %} value="{{first_name}}" {% endif %} name="first_name"/>
+lastname<input type="text"{% if last_name %} value="{{last_name}}" {% endif %} name="last_name"/>
+email<input type="email"{% if email %} value="{{email}}" {% endif %} name="email"/>
+username<input type="text" {% if username %} value="{{username}}" {% endif %} name="username"/>
+password<input type="password" name="password"/>
+phone number<input type="number" {% if phone %} value="{{phone}}" {% endif %} name="phone"/>
+<button type="submit">Register</button>
+</form>
