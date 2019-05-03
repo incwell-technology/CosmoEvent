@@ -24,3 +24,31 @@ class Participant(models.Model):
     
     def __str__(self):
         return f'{self.cosmo_user.user.get_full_name()}'
+
+
+class SingletonModel(models.Model):
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super(SingletonModel, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        pass
+
+    @classmethod
+    def load(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj
+
+participate_choice = (
+    (True, 'Allow Participant'),
+    (False, 'Block Participant'),
+)
+
+class CanParticipate(SingletonModel):
+    can_participate = models.BooleanField(max_length=1, choices=participate_choice, null=False, blank=False, default=True)
+
+    def __str__(self):
+        return f'{self.can_participate}'

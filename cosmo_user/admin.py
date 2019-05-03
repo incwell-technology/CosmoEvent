@@ -11,3 +11,8 @@ class CosmoUserAdmin(admin.ModelAdmin):
 class ParticipantAdmin(admin.ModelAdmin):
     list_display = ('cosmo_user', 'link', 'vote')
     ordering = ['-vote']
+
+
+@admin.register(cosmo_models.CanParticipate)
+class CanParticipateAdmin(admin.ModelAdmin):
+    list_display = ['can_participate']
