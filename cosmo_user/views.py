@@ -118,6 +118,10 @@ def verification(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('user-login'))
 
+    if request.POST['code'] == "" or type(request.POST['code']) == str:
+        messages.success(request, "Invalid Verification Code.", extra_tags="0")
+        return HttpResponseRedirect(reverse('not-verified-index'))
+
     cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
     cosmo_code_expiry = cosmo_user.expiry
     current_date_time = datetime.now()

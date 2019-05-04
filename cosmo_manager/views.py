@@ -167,6 +167,7 @@ def resend_code(request):
                 return HttpResponseRedirect(reverse('not-verified-index'))
             else:
                 messages.success(request, "You have already request for new verification code. You cannot request again for new one. Thank You", extra_tags="0")
+            return HttpResponseRedirect(reverse('not-verified-index'))
     except cosmo_models.CosmoUser.DoesNotExist:
         messages.success(request, "User does not exists.", extra_tags="0")
         if request.user.is_authenticated:
