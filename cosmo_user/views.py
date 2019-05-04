@@ -118,28 +118,35 @@ def verification(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('user-login'))
 
-    if request.POST['code'] == "" or type(request.POST['code']) == str:
-        messages.success(request, "Invalid Verification Code.", extra_tags="0")
-        return HttpResponseRedirect(reverse('not-verified-index'))
-
-    cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
-    cosmo_code_expiry = cosmo_user.expiry
-    current_date_time = datetime.now()
-    
-    diff = abs(current_date_time.date() - cosmo_code_expiry.date()).days
-
-    if (cosmo_user.token == int(request.POST.get('code'))):
-        if diff > 1:
-            messages.success(request,"Code has been expired. ", extra_tags="0")
+    try:
+        
+        if not request.POST['code']:
+            messages.success(request, "Invalid Verification Code.", extra_tags="0")
             return HttpResponseRedirect(reverse('not-verified-index'))
+
+        cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+        cosmo_code_expiry = cosmo_user.expiry
+        current_date_time = datetime.now()
+        
+        diff = abs(current_date_time.date() - cosmo_code_expiry.date()).days
+
+        if (cosmo_user.token == int(request.POST.get('code'))):
+            if diff > 1:
+                messages.success(request,"Code has been expired. ", extra_tags="0")
+                return HttpResponseRedirect(reverse('not-verified-index'))
+            else:
+                cosmo_user.verified = True
+                cosmo_user.save()
+                messages.success(request, "You have been successfully verified. Thank You.", extra_tags="1")
+                return HttpResponseRedirect(reverse('verified-user-view'))
         else:
-            cosmo_user.verified = True
-            cosmo_user.save()
-            messages.success(request, "You have been successfully verified. Thank You.", extra_tags="1")
-            return HttpResponseRedirect(reverse('verified-user-view'))
-    else:
+            messages.success(request,"Code does not matched. Please try again.", extra_tags="2")
+            return HttpResponseRedirect(reverse('not-verified-index'))
+    except Exception as e:
+        print(e)
         messages.success(request,"Code does not matched. Please try again.", extra_tags="2")
         return HttpResponseRedirect(reverse('not-verified-index'))
+
 
 
     

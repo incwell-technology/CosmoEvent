@@ -1,7 +1,9 @@
 from cosmo_user import models as cosmo_models
 from datetime import datetime
 from django.contrib.auth.models import User
-from cosmo_user.common import send_email_verification
+from cosmo_user.common.send_email_verification import send_verification_email
+from django.contrib.auth import authenticate, login, logout
+
 
 def register_django_user(request):
     try:
@@ -58,7 +60,7 @@ def register_django_user(request):
 
 def register_cosmo_user(user, phone, verification_code):
         try:
-            if cosmo_models.CosmoUser.objects.create(user=user, primaryPhone=phone, votingCount=25,verified=False,expiry=datetime.now(), token=verification_code):
+            if cosmo_models.CosmoUser.objects.create(user=user, primaryPhone=phone, votingCount=25,verified=False,resend_code = True, expiry=datetime.now(), token=verification_code):
                 return True
             else:
                 return False
