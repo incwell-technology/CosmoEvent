@@ -8,7 +8,8 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib import messages
 from .forms import ParticipantForm
-from cosmo_user.common import send_email_verification
+from cosmo_user.common.send_email_verification import send_verification_email
+from cosmo_user.common.resend_verification_email import resend_verification_email
 from datetime import datetime
 
 
@@ -159,10 +160,8 @@ def resend_code(request):
                         5555987, 6584658
                         """
                 }
-                if send_email_verification(update_details):
+                if resend_verification_email(update_details, cosmo_user, verification_code):
                     messages.success(request, "New verification code has been send to your email. Please verify. Thank you.", extra_tags="1")
-                    cosmo_user.resend_code = False
-                    cosmo_user.save()
                 else:
                     messages.success(request, "New verification code is unable to send. Please try again.", extra_tags="0")
                 return HttpResponseRedirect(reverse('not-verified-index'))

@@ -104,7 +104,14 @@ def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('user-login'))
 
-    return HttpResponseRedirect(reverse('verified-user-view'))
+    try:
+        cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+        if cosmo_user.verified:
+            return HttpResponseRedirect(reverse('verified-user-view'))
+        else:
+            return HttpResponseRedirect(reverse('not-verified-index'))
+    except cosmo_models.CosmoUser.DoesNotExist:
+        return HttpResponseRedirect(reverse('user-login'))
 
 
 def verification(request):

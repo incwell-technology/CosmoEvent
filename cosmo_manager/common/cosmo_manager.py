@@ -7,5 +7,8 @@ def is_verified(cosmo_user):
         return False
 
 
-def can_resend_code():
-    pass
+def can_resend_code(cosmo_user):
+    if cosmo_user.resend_code:
+        return True
+    else:
+        return False
