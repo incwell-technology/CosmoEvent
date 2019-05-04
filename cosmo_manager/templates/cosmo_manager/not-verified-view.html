@@ -7,8 +7,12 @@ Not verified
             {% if msg.tags == "0 success" %}
                 {{msg}}
             {% endif %}
+            {% if msg.tags == "1 success" %}
+                {{msg}}
+            {% endif %}
     {% endfor %}
 {% endif %}
+
 <form action="{% url 'verify-user' %}" method="POST">
 {% csrf_token %}
     <input type="number" name="code"/>

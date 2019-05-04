@@ -146,7 +146,7 @@ def resend_code(request):
                 'recipient_email': request.user.email,
                 'email_subject': 'Cosmo Event | Resend: Registration verification code.',
                 'email_body': f"""
-                        Hi { request.user.get_full_name() }, You have requested to send new verification code. Your new verification code is:
+                        Hi { request.user.get_full_name() }, You have requested for new verification code. Your new verification code is:
                     <input type='text' value='{verification_code}' disabled/>
                         Please copy and paste the verification code to the link: http://localhost:8000/home/verify
 
