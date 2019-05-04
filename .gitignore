@@ -97,3 +97,4 @@ migrations
 cosmo_user/static/cosmo_user/site-data
 daemon-services/
 !**/migrations/__init__.py
+credentials.yaml
