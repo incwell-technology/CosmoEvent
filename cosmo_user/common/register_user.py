@@ -1,12 +1,8 @@
 from cosmo_user import models as cosmo_models
 from datetime import datetime
 from django.contrib.auth.models import User
-import yaml
-import smtplib
-from email.mime.text import MIMEText
-from datetime import datetime
-from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
+from cosmo_user.common import send_email_verification
+
 def register_django_user(request):
     try:
         user = User.objects.create(username=request.POST['username'],
@@ -34,41 +30,39 @@ def register_django_user(request):
                 """
         }
         if send_verification_email(update_details):
+            user = User.objects.get(username=request.POST['username'])
+        
+            if register_cosmo_user(user=user, phone=request.POST['phone'], verification_code=verification_code):
+                users = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+                if users:
+                    login(request, users)
+                    return True
+                else:
+                    return False
+            else:
+                try:
+                    user.delete()
+                    return False
+                except Exception as e:
+                    print(e)
+                    return render(request, 'cosmo_user/register.html')
             return True
         else:
             user.delete()
             return False
+       
 
     except Exception as e:
         print(e)
         return False
 
-def register_cosmo_user(user, phone):
+def register_cosmo_user(user, phone, verification_code):
         try:
-            cosmo_models.CosmoUser.objects.create(user=user, primaryPhone=phone, votingCount=25,verified=False,token=2580,expiry=datetime.now())
-            return True
+            if cosmo_models.CosmoUser.objects.create(user=user, primaryPhone=phone, votingCount=25,verified=False,expiry=datetime.now(), token=verification_code):
+                return True
+            else:
+                return False
         except Exception as e:
             print(e)
             return False
 
-
-def send_verification_email(update_details):
-    credentials = yaml.load(open('credentials.yaml'), Loader=yaml.FullLoader)
-    sender = credentials['cosmo_admin_email']
-    password = credentials['cosmo_admin_password']
-    recipient = update_details['recipient_email']
-    msg = MIMEText(update_details['email_body'])
-    msg['Subject'] = update_details['email_subject']
-    msg['From'] = sender
-    msg['To'] = recipient
-
-    try:
-        server = smtplib.SMTP_SSL(credentials['smtp_server'], credentials['smtp_port'])
-        server.login(sender, password)
-        server.sendmail(sender, [recipient], msg.as_string())
-        server.quit()
-        return True
-    except Exception as e:
-        print(e)
-        return False
-        

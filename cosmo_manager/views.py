@@ -8,6 +8,8 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib import messages
 from .forms import ParticipantForm
+from cosmo_user.common import send_email_verification
+from datetime import datetime
 
 
 def verified_user_view(request):
@@ -126,3 +128,48 @@ def participate(request):
             return HttpResponseRedirect(reverse('not-verified-index'))
 
     
+def resend_code(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('user-login'))
+
+    try:
+        cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+        if cosmo_manager.is_verified(cosmo_user):
+            messages.success(request, "You have already been verified.", extra_tags="0")
+            return HttpResponseRedirect(reverse('verified-user-view'))
+        else:
+            if cosmo_manager.can_resend_code(cosmo_user):
+                verification_code = 2580    
+
+                update_details = {
+                'recipient_email': request.user.email,
+                'email_subject': 'Cosmo Event | Resend: Registration verification code.',
+                'email_body': f"""
+                        Hi { request.user.get_full_name() }, You have requested to send new verification code. Your new verification code is:
+                    <input type='text' value='{verification_code}' disabled/>
+                        Please copy and paste the verification code to the link: http://localhost:8000/home/verify
+
+                        Date: {datetime.now()}
+                        Note: You have request for new verification code. You will not be able to login if this code expires.
+
+                        Thank You,
+                        Cosmo Event.
+                        Arun Thapa Chowk, Jhamsikhel,
+                        Nepal.
+                        5555987, 6584658
+                        """
+                }
+                if send_email_verification(update_details):
+                    messages.success(request, "New verification code has been send to your email. Please verify. Thank you.", extra_tags="1")
+                    cosmo_user.resend_code = False
+                    cosmo_user.save()
+                else:
+                    messages.success(request, "New verification code is unable to send. Please try again.", extra_tags="0")
+                return HttpResponseRedirect(reverse('not-verified-index'))
+            else:
+                messages.success(request, "You have already request for new verification code. You cannot request again for new one. Thank You", extra_tags="0")
+    except cosmo_models.CosmoUser.DoesNotExist:
+        messages.success(request, "User does not exists.", extra_tags="0")
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse('user-login'))

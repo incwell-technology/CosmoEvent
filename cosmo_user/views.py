@@ -88,28 +88,11 @@ def user_register(request):
         else:
             try:
                 if register_user.register_django_user(request):
-                    user = User.objects.get(username=request.POST['username'])
-                    
-                    if register_user.register_cosmo_user(user=user, phone=request.POST['phone']):
-                        messages.success(request, "You have been successfully register.", extra_tags="1")
-                        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
-                        if user:
-                            login(request, user)
-                            return HttpResponseRedirect(reverse('not-verified-index'))
-                        else:
-                            return HttpResponseRedirect(reverse('user-index'))
-                    else:
-                        try:
-                            user.delete()
-                            messages.success(request, "Could not register. Please try again.", extra_tags="1")
-                            return HttpResponseRedirect(reverse('user-register'))
-                        except Exception as e:
-                            print(e)
-                            return render(request, 'cosmo_user/register.html')
+                    messages.success(request, "You have been successfully register. Please check your email to verify.", extra_tags="1")
+                    return HttpResponseRedirect(reverse('not-verified-index'))
                 else:
                     messages.success(request, "Could not register. Please try again.", extra_tags="1")
                     return HttpResponseRedirect(reverse('user-register'))
-
             except Exception as e:
                 print(e)
                 messages.success(request, "Could not register. Please try again.", extra_tags="1")

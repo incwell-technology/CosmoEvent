@@ -16,6 +16,9 @@ Not verified
     <button type="submit">Verify</button>
 </form>
 
+<a href="{% url 'resend-code' %}"><button>Resend Code</button></a>
+<br/>
+<br/>
 <form action="{% url 'user-logout' %}" method="post">
     {% csrf_token %}
     <input class="btn btn-round btn-fill" type="submit" value="Log out">
