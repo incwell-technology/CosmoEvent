@@ -6,16 +6,22 @@ Not verified
             {% endif %}
             {% if msg.tags == "0 success" %}
                 {{msg}}
-                <button>Resend Code</button>        
+            {% endif %}
+            {% if msg.tags == "1 success" %}
+                {{msg}}
             {% endif %}
     {% endfor %}
 {% endif %}
+
 <form action="{% url 'verify-user' %}" method="POST">
 {% csrf_token %}
     <input type="number" name="code"/>
     <button type="submit">Verify</button>
 </form>
 
+<a href="{% url 'resend-code' %}"><button>Resend Code</button></a>
+<br/>
+<br/>
 <form action="{% url 'user-logout' %}" method="post">
     {% csrf_token %}
     <input class="btn btn-round btn-fill" type="submit" value="Log out">

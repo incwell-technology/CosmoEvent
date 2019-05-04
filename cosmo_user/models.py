@@ -9,6 +9,7 @@ class CosmoUser(models.Model):
     token = models.IntegerField(null=False, blank=False)
     expiry = models.DateTimeField(default=datetime.now())
     primaryPhone = models.IntegerField(null=False, blank=False)
+    resend_code = models.BooleanField(null=False, blank=False, default=True) #False = cannot resend #True = can resend
 
     def __str__(self):
         return '{} {}'.format(self.user.first_name, self.user.last_name)

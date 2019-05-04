@@ -88,28 +88,11 @@ def user_register(request):
         else:
             try:
                 if register_user.register_django_user(request):
-                    user = User.objects.get(username=request.POST['username'])
-                    
-                    if register_user.register_cosmo_user(user=user, phone=request.POST['phone']):
-                        messages.success(request, "You have been successfully register.", extra_tags="1")
-                        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
-                        if user:
-                            login(request, user)
-                            return HttpResponseRedirect(reverse('not-verified-index'))
-                        else:
-                            return HttpResponseRedirect(reverse('user-index'))
-                    else:
-                        try:
-                            user.delete()
-                            messages.success(request, "Could not register. Please try again.", extra_tags="1")
-                            return HttpResponseRedirect(reverse('user-register'))
-                        except Exception as e:
-                            print(e)
-                            return render(request, 'cosmo_user/register.html')
+                    messages.success(request, "You have been successfully register. Please check your email to verify.", extra_tags="1")
+                    return HttpResponseRedirect(reverse('not-verified-index'))
                 else:
                     messages.success(request, "Could not register. Please try again.", extra_tags="1")
                     return HttpResponseRedirect(reverse('user-register'))
-
             except Exception as e:
                 print(e)
                 messages.success(request, "Could not register. Please try again.", extra_tags="1")
@@ -121,31 +104,49 @@ def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('user-login'))
 
-    return HttpResponseRedirect(reverse('verified-user-view'))
+    try:
+        cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+        if cosmo_user.verified:
+            return HttpResponseRedirect(reverse('verified-user-view'))
+        else:
+            return HttpResponseRedirect(reverse('not-verified-index'))
+    except cosmo_models.CosmoUser.DoesNotExist:
+        return HttpResponseRedirect(reverse('user-login'))
 
 
 def verification(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('user-login'))
 
-    cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
-    cosmo_code_expiry = cosmo_user.expiry
-    current_date_time = datetime.now()
-    
-    diff = abs(current_date_time.date() - cosmo_code_expiry.date()).days
-
-    if (cosmo_user.token == int(request.POST.get('code'))):
-        if diff > 1:
-            messages.success(request,"Code has been expired. ", extra_tags="0")
+    try:
+        
+        if not request.POST['code']:
+            messages.success(request, "Invalid Verification Code.", extra_tags="0")
             return HttpResponseRedirect(reverse('not-verified-index'))
+
+        cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+        cosmo_code_expiry = cosmo_user.expiry
+        current_date_time = datetime.now()
+        
+        diff = abs(current_date_time.date() - cosmo_code_expiry.date()).days
+
+        if (cosmo_user.token == int(request.POST.get('code'))):
+            if diff > 1:
+                messages.success(request,"Code has been expired. ", extra_tags="0")
+                return HttpResponseRedirect(reverse('not-verified-index'))
+            else:
+                cosmo_user.verified = True
+                cosmo_user.save()
+                messages.success(request, "You have been successfully verified. Thank You.", extra_tags="1")
+                return HttpResponseRedirect(reverse('verified-user-view'))
         else:
-            cosmo_user.verified = True
-            cosmo_user.save()
-            messages.success(request, "You have been successfully verified. Thank You.", extra_tags="1")
-            return HttpResponseRedirect(reverse('verified-user-view'))
-    else:
+            messages.success(request,"Code does not matched. Please try again.", extra_tags="2")
+            return HttpResponseRedirect(reverse('not-verified-index'))
+    except Exception as e:
+        print(e)
         messages.success(request,"Code does not matched. Please try again.", extra_tags="2")
         return HttpResponseRedirect(reverse('not-verified-index'))
+
 
 
     
