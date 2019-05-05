@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from cosmo_user.common.send_email_verification import send_verification_email
 from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse_lazy
 
 
 def register_django_user(request):
@@ -13,25 +14,25 @@ def register_django_user(request):
         user.set_password(request.POST['password'])
         user.save()
         verification_code = 2580
-
+        date = datetime.now()
         update_details = {
         'recipient_email': request.POST['email'],
         'email_subject': 'Cosmo Event | Registration verification code.',
         'email_body': f"""
-                Hi {request.POST['first_name']} {request.POST['last_name']}, You have registered in Cosmo Event. Your verification code is:
-            <input type='text' value='{verification_code}' disabled/>
-                Please copy and paste the verification code to the link: http://localhost:8000/home/verify
+                Hi {request.POST['first_name']} {request.POST['last_name']},<br/><br/> You have registered in Cosmo Event. Your verification code is:
+                 <span style="text-align:center;text-weight:bold"><h1>{verification_code}</h1></span><br/><br/>
+                Please copy and paste the verification code to the link:<a href='http://{request.META['HTTP_HOST']}{reverse_lazy('not-verified-index')}'>Click Here</a><br/><br/>
 
-                Date Registered: {datetime.now()}
-                Note: This verification code expires soon. Please verify soon.
-                Thank You,
-                Cosmo Event.
-                Arun Thapa Chowk, Jhamsikhel,
-                Nepal.
+                Date Registered: {date.strftime("%Y-%m-%d %H:%M:%S")}<br/>
+                Note: This verification code expires soon. Please verify soon.</br>
+                Thank You,<br/>
+                Cosmo Event.<br/>
+                Arun Thapa Chowk, Jhamsikhel,<br/>
+                Nepal.<br/>
                 5555987, 6584658
                 """
         }
-        if send_verification_email(update_details):
+        if send_verification_email(update_details, user):
             user = User.objects.get(username=request.POST['username'])
         
             if register_cosmo_user(user=user, phone=request.POST['phone'], verification_code=verification_code):

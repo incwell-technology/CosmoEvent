@@ -12,7 +12,7 @@ def resend_verification_email(update_details, cosmo_user, verification_code):
     sender = credentials['cosmo_admin_email']
     password = credentials['cosmo_admin_password']
     recipient = update_details['recipient_email']
-    msg = MIMEText(update_details['email_body'])
+    msg = MIMEText(update_details['email_body'], _subtype='html')
     msg['Subject'] = update_details['email_subject']
     msg['From'] = sender
     msg['To'] = recipient

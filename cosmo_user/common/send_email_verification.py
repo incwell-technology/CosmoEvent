@@ -5,12 +5,12 @@ from datetime import datetime
 from django.core.mail import send_mail
 
 
-def send_verification_email(update_details):
+def send_verification_email(update_details, user):
     credentials = yaml.load(open('credentials.yaml'), Loader=yaml.FullLoader)
     sender = credentials['cosmo_admin_email']
     password = credentials['cosmo_admin_password']
     recipient = update_details['recipient_email']
-    msg = MIMEText(update_details['email_body'])
+    msg = MIMEText(update_details['email_body'], _subtype='html')
     msg['Subject'] = update_details['email_subject']
     msg['From'] = sender
     msg['To'] = recipient
@@ -20,8 +20,8 @@ def send_verification_email(update_details):
         server.login(sender, password)
         server.sendmail(sender, [recipient], msg.as_string())
         server.quit()
-
         return True
     except Exception as e:
         print(e)
+        user.delete()
         return False
