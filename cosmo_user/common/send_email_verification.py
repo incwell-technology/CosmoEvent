@@ -3,7 +3,7 @@ import smtplib
 from email.mime.text import MIMEText
 from datetime import datetime
 from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
+
 
 def send_verification_email(update_details):
     credentials = yaml.load(open('credentials.yaml'), Loader=yaml.FullLoader)
@@ -16,10 +16,11 @@ def send_verification_email(update_details):
     msg['To'] = recipient
 
     try:
-        # server = smtplib.SMTP_SSL(credentials['smtp_server'], credentials['smtp_port'])
-        # server.login(sender, password)
-        # server.sendmail(sender, [recipient], msg.as_string())
-        # server.quit()
+        server = smtplib.SMTP_SSL(credentials['smtp_server'], credentials['smtp_port'])
+        server.login(sender, password)
+        server.sendmail(sender, [recipient], msg.as_string())
+        server.quit()
+
         return True
     except Exception as e:
         print(e)
