@@ -8,7 +8,4 @@ def is_verified(cosmo_user):
 
 
 def can_resend_code(cosmo_user):
-    if cosmo_user.resend_code:
-        return True
-    else:
-        return False
+    return True

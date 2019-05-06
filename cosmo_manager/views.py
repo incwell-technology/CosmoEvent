@@ -12,6 +12,7 @@ from cosmo_user.common.send_email_verification import send_verification_email
 from cosmo_user.common.resend_verification_email import resend_verification_email
 from datetime import datetime
 from django.urls import reverse_lazy
+from random import randint
 
 
 def verified_user_view(request):
@@ -141,7 +142,8 @@ def resend_code(request):
             return HttpResponseRedirect(reverse('verified-user-view'))
         else:
             if cosmo_manager.can_resend_code(cosmo_user):
-                verification_code = 1234    
+                verification_code = request.user.id+randint(10000, 99999)+request.user.id+2
+
                 date = datetime.now()
                 update_details = {
                 'recipient_email': request.user.email,

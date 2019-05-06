@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from cosmo_user.common.send_email_verification import send_verification_email
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse_lazy
-
+from random import randint
 
 def register_django_user(request):
     try:
@@ -13,7 +13,7 @@ def register_django_user(request):
                                    last_name=request.POST['last_name'])
         user.set_password(request.POST['password'])
         user.save()
-        verification_code = 2580
+        verification_code = randint(10000, 99999)+user.id
         date = datetime.now()
         update_details = {
         'recipient_email': request.POST['email'],
