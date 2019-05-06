@@ -11,6 +11,8 @@ from .forms import ParticipantForm
 from cosmo_user.common.send_email_verification import send_verification_email
 from cosmo_user.common.resend_verification_email import resend_verification_email
 from datetime import datetime
+from django.urls import reverse_lazy
+from random import randint
 
 
 def verified_user_view(request):
@@ -140,24 +142,25 @@ def resend_code(request):
             return HttpResponseRedirect(reverse('verified-user-view'))
         else:
             if cosmo_manager.can_resend_code(cosmo_user):
-                verification_code = 2580    
+                verification_code = request.user.id+randint(10000, 99999)+request.user.id+2
 
+                date = datetime.now()
                 update_details = {
                 'recipient_email': request.user.email,
                 'email_subject': 'Cosmo Event | Resend: Registration verification code.',
                 'email_body': f"""
-                        Hi { request.user.get_full_name() }, You have requested for new verification code. Your new verification code is:
-                    <input type='text' value='{verification_code}' disabled/>
-                        Please copy and paste the verification code to the link: http://localhost:8000/home/verify
+                        Hi { request.user.get_full_name() }, <br/><br/>You have requested for new verification code. Your new verification code is:
+                        <span style="text-align:center;text-weight:bold"><h1>{verification_code}</h1></span>
+                        Please copy and paste the verification code to the link: <a href='http://{request.META['HTTP_HOST']}{reverse_lazy('not-verified-index')}'>Click Here</a> <br/><br/>
 
-                        Date: {datetime.now()}
-                        Note: You have request for new verification code. You will not be able to login if this code expires.
-
-                        Thank You,
-                        Cosmo Event.
-                        Arun Thapa Chowk, Jhamsikhel,
-                        Nepal.
-                        5555987, 6584658
+                        Date Requested: {date.strftime("%Y-%m-%d %H:%M:%S")}<br/>
+                        <b>Note:</b> You have request for new verification code. You will not be able to login if this code expires.
+<br/><br/>
+                        Thank You,<br/>
+                        Cosmo Event.<br/>
+                        Arun Thapa Chowk, Jhamsikhel,<br/>
+                        Nepal.<br/>
+                        5555987, 6584658<br/>
                         """
                 }
                 if resend_verification_email(update_details, cosmo_user, verification_code):
