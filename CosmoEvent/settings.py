@@ -31,14 +31,14 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'cosmo_user',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cosmo_user',
-    'cosmo_manager'
+    'cosmo_manager',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'CosmoEvent.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +69,7 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATE_DIRS = ('cosmo_user/templates/', 'cosmo_user/templates/registration/')
 WSGI_APPLICATION = 'CosmoEvent.wsgi.application'
 
 
@@ -120,3 +121,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'test@test.com'
+EMAIL_HOST_PASSWORD = 'sOmethINgLikEthAt'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'test@test.com'
