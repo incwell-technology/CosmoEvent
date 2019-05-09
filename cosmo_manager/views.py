@@ -99,6 +99,8 @@ def participate(request):
                                         participant_user = form.save(commit=False)
                                         participant_user.cosmo_user = cosmo_user
                                         participant_user.link = request.POST['youtube_link']
+                                        contestantNumber = 'CAC'+str(random.sample(range(1, 5), 1)[0])+str(random.sample(range(5, 10), 1)[0])+str(request.user.id)                                     
+                                        participant_user.contestantNumber = contestantNumber
                                         if request.POST['secondary_phone']:
                                             participant_user.secondaryPhone = request.POST['secondary_phone']
                                         participant_user.save()

@@ -22,6 +22,7 @@ class Participant(models.Model):
     voteVideo_link = models.CharField(max_length=800, null=True, blank=True)
     vote = models.IntegerField(null=False, blank=False, default=0)
     secondaryPhone = models.IntegerField(null=True, blank=True)
+    contestantNumber = models.CharField(max_length=800, null=False, blank=False)
     
     def __str__(self):
         return f'{self.cosmo_user.user.get_full_name()}'

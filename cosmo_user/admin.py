@@ -9,7 +9,7 @@ class CosmoUserAdmin(admin.ModelAdmin):
 
 @admin.register(cosmo_models.Participant)
 class ParticipantAdmin(admin.ModelAdmin):
-    list_display = ('cosmo_user', 'link', 'vote')
+    list_display = ('cosmo_user', 'link', 'vote','contestantNumber')
     ordering = ['-vote']
 
 
