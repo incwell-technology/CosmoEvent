@@ -1,6 +1,8 @@
 {% extends 'cosmo_user/base.html' %}
 {% load static %}
+{% block password_reset %}
 
+{% endblock password_reset %}
 {% block content %}
     <div class="main">
         {% if messages %}
@@ -11,7 +13,7 @@
                 <div class="signin-content">
                     <div class="signin-image">
                         <figure><img src="{% static 'cosmo_user/images/browser-lock.png' %}" alt="sing in image"></figure>
-                        <a href="#" class="signup-image-link">Forgot Your Password?</a>
+                        <a href="{% url 'password_reset' %}" class="signup-image-link">Forgot Your Password?</a>
                     </div>
 
                     <div class="signin-form">

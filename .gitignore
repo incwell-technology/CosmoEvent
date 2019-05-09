@@ -95,6 +95,7 @@ static/images/store
 migrations
 .vscode
 cosmo_user/static/cosmo_user/site-data
+cosmo_manager/static/cosmo_manager/site-data
 daemon-services/
 !**/migrations/__init__.py
 credentials.yaml

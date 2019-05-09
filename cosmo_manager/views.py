@@ -13,16 +13,31 @@ from cosmo_user.common.resend_verification_email import resend_verification_emai
 from datetime import datetime
 from django.urls import reverse_lazy
 from random import randint
+import random
 
 
 def verified_user_view(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('user-login'))
 
+    context = {}
     try:
         cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
         if cosmo_user.verified:
-            return render(request, "cosmo_manager/verified-view.html")
+            participate_instance = cosmo_models.Participant.objects.none()
+            participate_list = []
+            try:
+                participate_instance = cosmo_models.Participant.objects.get(cosmo_user=cosmo_user)
+                participate_list.append({
+                    'youtube_link':participate_instance.link,
+                    'photo':participate_instance.photo.url.split('/static/')[1],
+                    'vote':participate_instance.vote
+                })
+            except cosmo_models.Participant.DoesNotExist:
+                pass
+            if participate_instance:
+                context.update({'participate':participate_list})
+            return render(request, "cosmo_manager/verified-view.html", context=context)
         else:
             return render(request, "cosmo_manager/not-verified-view.html")
     except cosmo_models.CosmoUser.DoesNotExist:
@@ -142,7 +157,8 @@ def resend_code(request):
             return HttpResponseRedirect(reverse('verified-user-view'))
         else:
             if cosmo_manager.can_resend_code(cosmo_user):
-                verification_code = request.user.id+randint(10000, 99999)+request.user.id+2
+                suffix_verification_code = request.user.id+randint(1000, 9999)+request.user.id+2
+                verification_code = random.sample(range(1000, 9999),1)[0]+suffix_verification_code
 
                 date = datetime.now()
                 update_details = {
@@ -154,8 +170,7 @@ def resend_code(request):
                         Please copy and paste the verification code to the link: <a href='http://{request.META['HTTP_HOST']}{reverse_lazy('not-verified-index')}'>Click Here</a> <br/><br/>
 
                         Date Requested: {date.strftime("%Y-%m-%d %H:%M:%S")}<br/>
-                        <b>Note:</b> You have request for new verification code. You will not be able to login if this code expires.
-<br/><br/>
+                        <br/>
                         Thank You,<br/>
                         Cosmo Event.<br/>
                         Arun Thapa Chowk, Jhamsikhel,<br/>
