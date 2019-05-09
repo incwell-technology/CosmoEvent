@@ -1,11 +1,13 @@
-Validated User
-{% if messages %}
-{% include 'cosmo_user/notification.html' %}
-{% endif %}
-<form action="{% url 'user-logout' %}" method="post">
-    {% csrf_token %}
-    <input class="btn btn-round btn-fill" type="submit" value="Log out">
-</form>
-<a href="{% url 'participate' %}">Participate</a>
+{% extends "cosmo_manager/base.html" %}
 
-{{participate.0}}
+{% block content %}
+ <div id="text-area">
+    <h3 class="welcome-text">Welcome.....</h3>
+    <div class="form-group" id="register-button">
+    <a href="{% url 'participate' %}"> <button type="submit" class="btn">Participate</button></a>
+    </div>
+</div>
+{% if messages %}
+    {% include 'cosmo_user/notification.html' %}
+{% endif %}
+{% endblock content %}
