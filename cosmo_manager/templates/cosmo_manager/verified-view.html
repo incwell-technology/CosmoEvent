@@ -7,5 +7,11 @@ Validated User
     <input class="btn btn-round btn-fill" type="submit" value="Log out">
 </form>
 <a href="{% url 'participate' %}">Participate</a>
-
+<form name="search_participant" method="POST" action="{% url 'search' %}">
+{% csrf_token %}
+<input type="text" name="search"/>
+<button type="submit"> Search </button>
+</form>
 {{participate.0}}
+
+{{search_result}}

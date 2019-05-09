@@ -6,5 +6,6 @@ urlpatterns = [
     path('verify', cosmo_manager_views.not_verified_index, name="not-verified-index"),
     path('participate', cosmo_manager_views.participate, name="participate"),
     path('resend-code', cosmo_manager_views.resend_code, name="resend-code"),
+    path('search', cosmo_manager_views.search, name="search")
 ]
 

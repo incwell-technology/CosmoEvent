@@ -14,6 +14,7 @@ from datetime import datetime
 from django.urls import reverse_lazy
 from random import randint
 import random
+from django.db.models import Q
 
 
 def verified_user_view(request):
@@ -96,14 +97,26 @@ def participate(request):
                             else:
                                 try:
                                     if form.is_valid():
+                                        contestantNumber = 'CAC'+str(random.sample(range(1, 5), 1)[0])+str(random.sample(range(5, 10), 1)[0])+str(request.user.id)                                     
+
+                                        if not cosmo_models.Tags.objects.filter(title=request.user.first_name):
+                                            tags = cosmo_models.Tags.objects.create(title=request.user.first_name)
+
+                                        if not cosmo_models.Tags.objects.filter(title=request.user.last_name):
+                                            tags2 = cosmo_models.Tags.objects.create(title=request.user.last_name)
+                                        if not cosmo_models.Tags.objects.filter(title=contestantNumber):
+                                            tags3 = cosmo_models.Tags.objects.create(title=contestantNumber)
+                                        if not cosmo_models.Tags.objects.filter(title=request.user.get_full_name()):
+                                            cosmo_models.Tags.objects.create(title=request.user.get_full_name())
                                         participant_user = form.save(commit=False)
                                         participant_user.cosmo_user = cosmo_user
                                         participant_user.link = request.POST['youtube_link']
-                                        contestantNumber = 'CAC'+str(random.sample(range(1, 5), 1)[0])+str(random.sample(range(5, 10), 1)[0])+str(request.user.id)                                     
                                         participant_user.contestantNumber = contestantNumber
                                         if request.POST['secondary_phone']:
                                             participant_user.secondaryPhone = request.POST['secondary_phone']
                                         participant_user.save()
+                                        for data in cosmo_models.Tags.objects.filter(Q(title=request.user.first_name) | Q(title=request.user.last_name) | Q(title=request.user.get_full_name) | Q(title=contestantNumber)):
+                                            participant_user.tags.add(data)
                                         messages.success(request, "Congratulations. You have successfully participated in Cosmo Event. Thank You.", extra_tags="1")
                                     else:
                                         context.update({'form':form})
@@ -193,3 +206,24 @@ def resend_code(request):
         if request.user.is_authenticated:
             logout(request)
         return HttpResponseRedirect(reverse('user-login'))
+
+
+def search(request):
+    cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+
+    if not cosmo_manager.is_verified(cosmo_user):
+        messages.success(request, "Please verify your account.", extra_tags="0")
+        return HttpResponseRedirect(reverse('not-verified-index'))
+    
+    try:
+        search_result = cosmo_models.Participant.objects.filter(tags__title__icontains=request.POST['search']).distinct()
+        if search_result:
+            context = {}
+            context.update({'search_result':search_result})
+            return render(request, "cosmo_manager/verified-view.html", context=context)
+        else:
+            messages.success(request, "Sorry. No result found. Please try again.", extra_tags="0")
+            return HttpResponseRedirect(reverse('verified-user-view'))    
+    except cosmo_models.Participant.DoesNotExist:
+        messages.success(request, "Sorry. No result found. Please try again.", extra_tags="0")
+        return HttpResponseRedirect(reverse('verified-user-view'))

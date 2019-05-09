@@ -15,6 +15,13 @@ class CosmoUser(models.Model):
         return '{} {}'.format(self.user.first_name, self.user.last_name)
 
 
+class Tags(models.Model):
+    title = models.CharField(max_length=800, null=False, blank=False, default="Cosmo")
+
+    def __str__(self):
+        return f'{self.title}'
+
+        
 class Participant(models.Model):
     cosmo_user = models.OneToOneField(CosmoUser, on_delete=models.CASCADE, related_name="cosmo_participant")
     photo = models.ImageField(upload_to='cosmo_user/static/cosmo_user/site-data/profile-pictures', null=False, blank=False)
@@ -23,7 +30,8 @@ class Participant(models.Model):
     vote = models.IntegerField(null=False, blank=False, default=0)
     secondaryPhone = models.IntegerField(null=True, blank=True)
     contestantNumber = models.CharField(max_length=800, null=False, blank=False)
-    
+    tags = models.ManyToManyField(Tags,related_name="participant_tags")
+
     def __str__(self):
         return f'{self.cosmo_user.user.get_full_name()}'
 
