@@ -1,53 +1,5 @@
 {% load static %}
 
-{% comment %} {% extends 'cosmo_user/base.html' %}
-
-
-{% block password_reset %}
-
-{% endblock password_reset %}
-
-{% block content %}
-    <div class="main">
-        {% if messages %}
-            {% include 'cosmo_user/notification.html' %}
-        {% endif %}
-        <section class="sign-in">
-            <div class="container">
-                <div class="signin-content">
-                    <div class="signin-image">
-                        <figure><img src="{% static 'cosmo_user/images/browser-lock.png' %}" alt="sing in image"></figure>
-                        <a href="{% url 'password_reset' %}" class="signup-image-link">Forgot Your Password?</a>
-                    </div>
-
-                    <div class="signin-form">
-                        <h2 class="form-title">{{ message }}</h2>
-                        <form method="POST" class="register-form" id="login-form" action="/login">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="username" id="your_name" placeholder="Username" required/>
-                            </div>
-                            <div class="form-group">
-                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="password" id="your_pass" placeholder="Password" required/>
-                            </div>
-                            <div class="form-group form-button">
-                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
-                            </div>
-                        </form>
-                        <div class="form-group form-button">
-                            <a href="{% url 'user-register' %}">
-                            <input type="submit" name="signin" id="signin" class="form-submit" value="Register"/>                            
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-{% endblock content %} {% endcomment %}
-
 
 <html>
   <head>
@@ -113,15 +65,21 @@
                 <input type="password" name="password" id="password" placeholder="Password" autocomplete="off" required/>
             </div>
             <div id="forgot-pwd">
-              <p><a class="p-text" href="password.html">Forgot password?</a></p>
+              <p><a class="p-text" href="{% url 'password_reset' %}">Forgot password?</a></p>
             </div>
             <div class="form-group" id="button">
+            
+            {% block password_reset %}
+         
+
+            {% endblock password_reset %}
               <button type="submit" class="btn">Login</button>
             </div>
           </form> 
         </div>
         <div>
         </div>
+        
         <div class="signup-container">
           Don't have an account?
           <a class="p-text" href="{% url 'user-register' %}">Sign up</a>

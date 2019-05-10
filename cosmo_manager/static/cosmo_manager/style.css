@@ -363,8 +363,8 @@ input[type="file"]::-webkit-file-upload-button {
 }
 .resend-container {
   text-align: center;
-  height: 100%;
   width: 100%;
+  margin-top: 100px;
 }
 .side-nav-img-container {
   text-align: center;
@@ -414,9 +414,7 @@ input {
   } */
 }
 @media only screen and (max-width: 767px) {
-  form {
-    margin: unset;
-  }
+ 
   .verify-container .form-group {
     margin-top: 20px;
     width: 80%;

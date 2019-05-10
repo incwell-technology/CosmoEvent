@@ -60,9 +60,7 @@
           <div class="overlay-content">
             <div class="content-list">
                 <a href="{% url 'verified-user-view' %}">Home</a>
-                 <a href="participate.html">Participate</a>
-                 <a href="#">Guidelines</a>
-                 <a href="#">Terms and Conditions</a>
+                 <a href="{% url 'participate' %}">Participate</a>
                 <a href="#">
                     <form action="{% url 'user-logout' %}" method="post">
                         {% csrf_token %}

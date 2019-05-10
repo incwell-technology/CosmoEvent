@@ -1,14 +1,3 @@
-
-{% comment %} <form method="POST">
-firstname<input type="text" {% if first_name %} value="{{first_name}}" {% endif %} name="first_name"/>
-lastname<input type="text"{% if last_name %} value="{{last_name}}" {% endif %} name="last_name"/>
-email<input type="email"{% if email %} value="{{email}}" {% endif %} name="email"/>
-username<input type="text" {% if username %} value="{{username}}" {% endif %} name="username"/>
-password<input type="password" name="password"/>
-phone number<input type="number" {% if phone %} value="{{phone}}" {% endif %} name="phone"/>
-<button type="submit">Register</button>
-</form> {% endcomment %}
-
 <html>
 {% load static %}
   <head>
@@ -55,29 +44,29 @@ phone number<input type="number" {% if phone %} value="{{phone}}" {% endif %} na
               <label for="your_name"
                 ><i class="fas fa-file-signature"></i
               ></label>
-              <input type="text" id="usernamee" placeholder="First Name" {% if first_name %} value="{{first_name}}" {% endif %} name="first_name"/>
+              <input type="text" id="usernamee" autocomplete="off" placeholder="First Name" {% if first_name %} value="{{first_name}}" {% endif %} name="first_name"/>
             </div>
             <div class="form-group" id="name">
               <label for="your_name"
                 ><i class="fas fa-file-signature"></i
               ></label>
-              <input type="text" id="usernamee" placeholder="Last Name" {% if last_name %} value="{{last_name}}" {% endif %} name="last_name"/>
+              <input type="text" id="usernamee" autocomplete="off" placeholder="Last Name" {% if last_name %} value="{{last_name}}" {% endif %} name="last_name"/>
             </div>
             <div class="form-group" id="name">
               <label for="your_name"><i class="fas fa-phone-volume"></i></label>
-              <input type="number" id="usernamee" placeholder="Phone number" {% if phone %} value="{{phone}}" {% endif %} name="phone"/>
+              <input type="number" id="usernamee" autocomplete="off" placeholder="Phone number" {% if phone %} value="{{phone}}" {% endif %} name="phone"/>
             </div>
             <div class="form-group" id="name">
               <label for="your_name"><i class="fas fa-envelope"></i></label>
-              <input type="email" id="usernamee" placeholder="Email" {% if email %} value="{{email}}" {% endif %} name="email"/>
+              <input type="email" id="usernamee" autocomplete="off" placeholder="Email" {% if email %} value="{{email}}" {% endif %} name="email"/>
             </div>
             <div class="form-group" id="name">
               <label for="your_name"><i class="fas fa-user"></i></label>
-              <input type="text" id="usernamee" placeholder="Username" {% if username %} value="{{username}}" {% endif %} name="username"/>
+              <input type="text" id="usernamee" autocomplete="off" placeholder="Username" {% if username %} value="{{username}}" {% endif %} name="username"/>
             </div>
             <div class="form-group" id="pwd">
               <label for="your_name"><i class="fas fa-lock"></i></label>
-              <input type="password" id="password"  placeholder="Password" name="password"/>
+              <input type="password" id="password" autocomplete="off" placeholder="Password" name="password"/>
             </div>
 
             <div class="grid-container">
