@@ -467,3 +467,12 @@ input {
     margin-bottom: 20px;
   }
 }
+
+.home-page
+{
+  width:50% !important;
+}
+
+.home-page .home-logo
+{
+}

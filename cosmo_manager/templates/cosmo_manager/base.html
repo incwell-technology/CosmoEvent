@@ -40,7 +40,7 @@
       <div class="main-container" id="home-container">
         <div class="nav-bar">
           <span id="open-btn" onclick="openNav()">&#9776;</span>
-          <p class="title" style="color:#e6b220">Cosmo Concepts</p>
+          <p class="title" style="color:#e6b220;font-size:18px;">Cosmo Acoustic Challenge</p>
         </div>
 
         <div id="myNav" class="overlay">
@@ -61,6 +61,7 @@
             <div class="content-list">
                 <a href="{% url 'verified-user-view' %}">Home</a>
                  <a href="{% url 'participate' %}">Participate</a>
+                 <a href="{% url 'participate' %}">Terms and Condition</a>
                 <a href="#">
                     <form action="{% url 'user-logout' %}" method="post">
                         {% csrf_token %}
@@ -77,7 +78,7 @@
           </div>
         </div>
             {% block content %}
-<div class="register-container Participation-container">
+{% comment %} <div class="register-container Participation-container">
           <form action="home.html">
             <div class="form-group photo-upload">
               <label><i class="fas fa-upload"></i> Upload Photo:</label>
@@ -119,7 +120,7 @@
               </button>
             </div>
           </form>
-        </div>
+        </div> {% endcomment %}
             {% endblock content %}
         </div>
       <div class="ad-container">
