@@ -1,0 +1,51 @@
+{% extends "cosmo_manager/base.html" %}
+
+{% block content %}
+{% if error %}
+    {% for err in error %}
+        {{err}}
+    {% endfor %}
+{% endif %}
+
+<div class="register-container Participation-container">
+<form method="POST"  enctype="multipart/form-data"> 
+{% csrf_token %}
+
+        <div class="form-group" id="y-link">
+            <label for="your_name"
+            ><i class="fas fa-file-signature"></i
+            ></label>
+            <input type="text"  placeholder="Youtube Link" name="youtube_link" required/>
+           
+        </div>
+        <div class="form-group">
+              <label for="your_name"><i class="fas fa-phone-volume"></i></label>
+              <input type="number" placeholder="Secondary Phone" id="s-phone" required name="secondary_phone"/>
+             
+            </div>
+    
+   <div class="grid-container">
+        <div class="checkbox grid-item-first">
+        <input type="checkbox" id="box" value="0" />
+        </div>
+        <div class="grid-item"><p>Terms and Condition</p></div>
+    </div>
+    <div class="form-group" id="register-button">
+        <button type="submit" id="check" class="btn" disabled>
+        Submit
+        </button>
+    </div>
+         
+        </div>
+        <script>
+      var checkbox = document.getElementById("box");
+      checkbox.addEventListener("change", function(e) {
+        e.preventDefault();
+        if (this.checked) {
+          document.getElementById("check").disabled = false;
+        } else {
+          document.getElementById("check").disabled = true;
+        }
+      });
+    </script>
+{% endblock content %}
