@@ -127,7 +127,7 @@ STATIC_URL = '/static/'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = credentials['cosmo_admin_email']
+EMAIL_HOST_PASSWORD = credentials['cosmo_admin_password']
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = ''
+DEFAULT_FROM_EMAIL = credentials['cosmo_admin_email']
