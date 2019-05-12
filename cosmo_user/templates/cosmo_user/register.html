@@ -1,18 +1,127 @@
-{% if messages %}
-    {% include 'cosmo_user/notification.html' %}
-{% endif %}
-{% if error %}
-    {% for err in error %}
-        {{err}}
-    {% endfor %}
-{% endif %}
-<form method="POST">
-{% csrf_token %}
-firstname<input type="text" {% if first_name %} value="{{first_name}}" {% endif %} name="first_name"/>
-lastname<input type="text"{% if last_name %} value="{{last_name}}" {% endif %} name="last_name"/>
-email<input type="email"{% if email %} value="{{email}}" {% endif %} name="email"/>
-username<input type="text" {% if username %} value="{{username}}" {% endif %} name="username"/>
-password<input type="password" name="password"/>
-phone number<input type="number" {% if phone %} value="{{phone}}" {% endif %} name="phone"/>
-<button type="submit">Register</button>
-</form>
+<html>
+{% load static %}
+  <head>
+    <title>
+      Cosmo acoustic
+    </title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'cosmo_user/style.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+<script>
+      function closeNav() {
+        document.getElementById("alert-text").style.display = "none";
+      }
+    </script>
+  </head>
+  <body>
+    <div class="body-container">
+      <div class="ad-container">
+        <img class="ad-image" src="" alt="Ad" />
+      </div>
+      <div class="main-container">
+        <div class="register-title">
+          <p class="title">Register</p>
+        </div>
+        <div class="register-container">
+          <form method="POST" class="register-form">
+                {% csrf_token %}
+
+            <div class="form-group" id="name">
+              <label for="your_name"
+                ><i class="fas fa-file-signature"></i
+              ></label>
+              <input type="text" id="usernamee" autocomplete="off" placeholder="First Name" {% if first_name %} value="{{first_name}}" {% endif %} name="first_name"/>
+            </div>
+            <div class="form-group" id="name">
+              <label for="your_name"
+                ><i class="fas fa-file-signature"></i
+              ></label>
+              <input type="text" id="usernamee" autocomplete="off" placeholder="Last Name" {% if last_name %} value="{{last_name}}" {% endif %} name="last_name"/>
+            </div>
+            <div class="form-group" id="name">
+              <label for="your_name"><i class="fas fa-phone-volume"></i></label>
+              <input type="number" id="usernamee" autocomplete="off" placeholder="Phone number" {% if phone %} value="{{phone}}" {% endif %} name="phone"/>
+            </div>
+            <div class="form-group" id="name">
+              <label for="your_name"><i class="fas fa-envelope"></i></label>
+              <input type="email" id="usernamee" autocomplete="off" placeholder="Email" {% if email %} value="{{email}}" {% endif %} name="email"/>
+            </div>
+            <div class="form-group" id="name">
+              <label for="your_name"><i class="fas fa-user"></i></label>
+              <input type="text" id="usernamee" autocomplete="off" placeholder="Username" {% if username %} value="{{username}}" {% endif %} name="username"/>
+            </div>
+            <div class="form-group" id="pwd">
+              <label for="your_name"><i class="fas fa-lock"></i></label>
+              <input type="password" id="password" autocomplete="off" placeholder="Password" name="password"/>
+            </div>
+
+            <div class="grid-container">
+              <div class="checkbox grid-item-first">
+                <input type="checkbox" id="box" value="0" />
+              </div>
+              <div class="grid-item"><p>Terms and Condition</p></div>
+            </div>
+
+            <div class="form-group" id="register-button">
+              <button type="submit" id="check" class="btn" disabled>
+                Signup
+              </button>
+            </div>
+          </form>
+        </div>
+        {% if messages %}
+            {% include 'cosmo_user/notification.html' %}
+        {% endif %}
+        {% if error %}
+        <div id="alert-text" class="w3-panel w3-red">
+            {% for err in error %}
+             
+                  <p>
+               {{forloop.counter}}. {{err}}<br/>
+                  
+                  </p>
+            {% endfor %}
+                  <p class="panel-box" onclick="closeNav()">&times;</p>
+
+              </div>
+
+        {% endif %}
+
+        <div class="signin-container">
+          <p>
+            Already have an account?
+            <a class="p-text" href="{% url 'user-login' %}">Sign in</a>
+          </p>
+        </div>
+      </div>
+      <div class="ad-container">
+        <img class="ad-image" src="" alt="Ad" />
+      </div>
+    </div>
+    <script>
+      var checkbox = document.getElementById("box");
+      checkbox.addEventListener("change", function(e) {
+        e.preventDefault();
+        if (this.checked) {
+          document.getElementById("check").disabled = false;
+        } else {
+          document.getElementById("check").disabled = true;
+        }
+      });
+    </script>
+  </body>
+</html>

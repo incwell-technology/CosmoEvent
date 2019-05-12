@@ -31,7 +31,7 @@ def verified_user_view(request):
                 participate_instance = cosmo_models.Participant.objects.get(cosmo_user=cosmo_user)
                 participate_list.append({
                     'youtube_link':participate_instance.link,
-                    'photo':participate_instance.photo.url.split('/static/')[1],
+                    # 'photo':participate_instance.photo.url.split('/static/')[1],
                     'vote':participate_instance.vote
                 })
             except cosmo_models.Participant.DoesNotExist:
@@ -82,20 +82,22 @@ def participate(request):
                             else:
                                 return HttpResponseRedirect(reverse('not-verified-index'))
                         else:
-                            form = ParticipantForm(request.POST, request.FILES)
+                            # form = ParticipantForm(request.POST, request.FILES)
                             error = []
-                            if request.POST.get('photo') == "":
-                                error.append('Photo field is required.')
+                            # if request.POST.get('photo') == "":
+                            #     error.append('Photo field is required.')
                             if request.POST['youtube_link']  == "":
                                 error.append('Youtube link is required.')
-                            
+                            if request.POST['secondary_phone'] == "":
+                                error.append('Secondary Phone is required.')
                             if error:
                                 context.update({'error':error})
-                                form = ParticipantForm()
-                                context.update({'form':form})
+                                # form = ParticipantForm()
+                                # context.update({'form':form})
                                 return render(request, "cosmo_manager/participate.html", context=context)
                             else:
                                 try:
+<<<<<<< HEAD
                                     if form.is_valid():
                                         contestantNumber = 'CAC'+str(random.sample(range(1, 5), 1)[0])+str(random.sample(range(5, 10), 1)[0])+str(request.user.id)                                     
 
@@ -117,10 +119,17 @@ def participate(request):
                                         participant_user.save()
                                         for data in cosmo_models.Tags.objects.filter(Q(title=request.user.first_name) | Q(title=request.user.last_name) | Q(title=request.user.get_full_name) | Q(title=contestantNumber)):
                                             participant_user.tags.add(data)
+=======
+                                    cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+                                    contestantNumber = 'CAC'+str(random.sample(range(1, 5), 1)[0])+str(random.sample(range(5, 10), 1)[0])+str(request.user.id)                                     
+                                    participate_user = cosmo_models.Participant.objects.create(cosmo_user=cosmo_user,
+                                    link=request.POST['youtube_link'],secondaryPhone=request.POST['secondary_phone'],
+                                    contestantNumber=contestantNumber)
+                                    if participate_user:
+>>>>>>> 7101b475c6b3a5c47ddc8686081b734a4a6a6fb4
                                         messages.success(request, "Congratulations. You have successfully participated in Cosmo Event. Thank You.", extra_tags="1")
                                     else:
-                                        context.update({'form':form})
-                                        return render(request, "cosmo_manager/participate.html", context=context)
+                                        messages.success(request, "Sorry. We are unable to save the records. Please try again.", extra_tags="0")
                                 except Exception as e:
                                     print(e)
                                     messages.success(request, "Sorry. There was a problem on participating. Please try again.")
@@ -130,8 +139,6 @@ def participate(request):
                                 else:
                                     return HttpResponseRedirect(reverse('not-verified-index'))
                     else:
-                        form = ParticipantForm()
-                        context.update({'form':form})
                         return render(request, "cosmo_manager/participate.html", context=context)
                 else:
                     messages.success(request, "Sorry. Participation time is finished.", extra_tags="0")

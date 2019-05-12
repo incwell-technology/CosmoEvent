@@ -1,7 +1,19 @@
-Validated User
+{% extends "cosmo_manager/base.html" %}
+{% load static %}
+{% block content %}
+ <div id="text-area">
+    <h3 class="welcome-text">Welcome, {{ request.user.get_full_name | title }}</h3>
+    <div class="form-group" id="register-button">
+    <a href="{% url 'participate' %}"> <button type="submit" class="btn">Participate</button></a>
+    </div>
+</div>
+<div class="home-page">
+    <img src="{% static 'cosmo_manager/images/logo.png' %}" style="" class="home-logo"/>
+</div>
 {% if messages %}
-{% include 'cosmo_user/notification.html' %}
+    {% include 'cosmo_user/notification.html' %}
 {% endif %}
+<<<<<<< HEAD
 <form action="{% url 'user-logout' %}" method="post">
     {% csrf_token %}
     <input class="btn btn-round btn-fill" type="submit" value="Log out">
@@ -15,3 +27,6 @@ Validated User
 {{participate.0}}
 
 {{search_result}}
+=======
+{% endblock content %}
+>>>>>>> 7101b475c6b3a5c47ddc8686081b734a4a6a6fb4
