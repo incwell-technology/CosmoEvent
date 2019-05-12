@@ -56,6 +56,8 @@ def register_django_user(request):
        
 
     except Exception as e:
+        if user:
+            user.delete()
         print(e)
         return False
 

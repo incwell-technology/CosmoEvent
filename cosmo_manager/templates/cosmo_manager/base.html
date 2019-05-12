@@ -1,0 +1,131 @@
+<html>
+{% load static %}
+  <head>
+    <title>
+      Cosmo acoustic
+    </title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'cosmo_manager/style.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script>
+      function openNav() {
+        document.getElementById("myNav").style.width = "60%";
+      }
+      function closeNav() {
+        document.getElementById("myNav").style.width = "0%";
+
+        document.getElementById("open-btn").style.displaly = "block";
+      }
+    </script>
+  </head>
+  <body>
+  <div class="body-container">
+      <div class="ad-container">
+        <img class="ad-image" src="" alt="Ad" />
+      </div>
+      <div class="main-container" id="home-container">
+        <div class="nav-bar">
+          <span id="open-btn" onclick="openNav()">&#9776;</span>
+          <p class="title" style="color:#e6b220">Cosmo Concepts</p>
+        </div>
+
+        <div id="myNav" class="overlay">
+          <div class="home-logo">
+            <a
+              href="javascript:void(0)"
+              class="closebtn"
+              onclick="closeNav()"
+              style="color:#b0985d"
+              >&times;</a
+            >
+            <a href="{% url 'verified-user-view' %}" class="side-nav-img-container"
+              ><img src="{% static 'cosmo_manager/images/logo.png' %}"
+            /></a>
+            <p>{{request.user.get_full_name|title}}</p>
+          </div>
+          <div class="overlay-content">
+            <div class="content-list">
+                <a href="{% url 'verified-user-view' %}">Home</a>
+                 <a href="{% url 'participate' %}">Participate</a>
+                <a href="#">
+                    <form action="{% url 'user-logout' %}" method="post">
+                        {% csrf_token %}
+                        <input style="
+    width: 113px;
+    height: 30px;
+    padding: 0px;
+    position: absolute;
+    top: 122%;
+" class="btn btn-round btn-fill" type="submit" value="Log out">
+                    </form>
+                </a>
+            </div>
+          </div>
+        </div>
+            {% block content %}
+<div class="register-container Participation-container">
+          <form action="home.html">
+            <div class="form-group photo-upload">
+              <label><i class="fas fa-upload"></i> Upload Photo:</label>
+              <div class="file_button_container">
+                <input type="file" required />
+              </div>
+            </div>
+
+            <div class="form-group" id="y-link">
+              <label for="your_name"
+                ><i class="fas fa-file-signature"></i
+              ></label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Youtube Link"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="your_name"><i class="fas fa-phone-volume"></i></label>
+              <input
+                type="text"
+                name="username"
+                id="s-phone"
+                placeholder="Secondary Phone"
+              />
+            </div>
+
+            <div class="grid-container">
+              <div class="checkbox grid-item-first">
+                <input type="checkbox" id="box" value="0" />
+              </div>
+              <div class="grid-item"><p>Terms and Condition</p></div>
+            </div>
+            <div class="form-group" id="register-button">
+              <button type="submit" id="check" class="btn" disabled>
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+            {% endblock content %}
+        </div>
+      <div class="ad-container">
+        <img class="ad-image" src="" alt="Ad" />
+      </div>
+    </div>
+
+  </body>
+</html>

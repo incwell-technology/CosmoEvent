@@ -11,7 +11,7 @@ from cosmo_user.common import register_user
 def user_login(request):
     if request.method == 'GET':
         if not request.user.is_authenticated:
-            return render(request, 'cosmo_user/login.html', {'message': 'Login', 'title': 'Cosmo Event | Login'})
+            return render(request, 'cosmo_user/login.html', {'message': 'Login Credentials', 'title': 'Cosmo Event | Login'})
         else:
             return HttpResponseRedirect(reverse('user-index'))
 
