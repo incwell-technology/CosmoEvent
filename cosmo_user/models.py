@@ -17,11 +17,11 @@ class CosmoUser(models.Model):
 
 class Participant(models.Model):
     cosmo_user = models.OneToOneField(CosmoUser, on_delete=models.CASCADE, related_name="cosmo_participant")
-    photo = models.ImageField(upload_to='cosmo_user/static/cosmo_user/site-data/profile-pictures', null=False, blank=False)
+    photo = models.ImageField(upload_to='cosmo_user/static/cosmo_user/site-data/profile-pictures', null=True, blank=True)
     link = models.CharField(max_length=800, null=False, blank=False)
     voteVideo_link = models.CharField(max_length=800, null=True, blank=True)
     vote = models.IntegerField(null=False, blank=False, default=0)
-    secondaryPhone = models.IntegerField(null=True, blank=True)
+    secondaryPhone = models.IntegerField(null=False, blank=False, default="984000000")
     contestantNumber = models.CharField(max_length=800, null=False, blank=False)
     
     def __str__(self):
