@@ -97,36 +97,25 @@ def participate(request):
                                 return render(request, "cosmo_manager/participate.html", context=context)
                             else:
                                 try:
-<<<<<<< HEAD
-                                    if form.is_valid():
-                                        contestantNumber = 'CAC'+str(random.sample(range(1, 5), 1)[0])+str(random.sample(range(5, 10), 1)[0])+str(request.user.id)                                     
-
-                                        if not cosmo_models.Tags.objects.filter(title=request.user.first_name):
-                                            tags = cosmo_models.Tags.objects.create(title=request.user.first_name)
-
-                                        if not cosmo_models.Tags.objects.filter(title=request.user.last_name):
-                                            tags2 = cosmo_models.Tags.objects.create(title=request.user.last_name)
-                                        if not cosmo_models.Tags.objects.filter(title=contestantNumber):
-                                            tags3 = cosmo_models.Tags.objects.create(title=contestantNumber)
-                                        if not cosmo_models.Tags.objects.filter(title=request.user.get_full_name()):
-                                            cosmo_models.Tags.objects.create(title=request.user.get_full_name())
-                                        participant_user = form.save(commit=False)
-                                        participant_user.cosmo_user = cosmo_user
-                                        participant_user.link = request.POST['youtube_link']
-                                        participant_user.contestantNumber = contestantNumber
-                                        if request.POST['secondary_phone']:
-                                            participant_user.secondaryPhone = request.POST['secondary_phone']
-                                        participant_user.save()
-                                        for data in cosmo_models.Tags.objects.filter(Q(title=request.user.first_name) | Q(title=request.user.last_name) | Q(title=request.user.get_full_name) | Q(title=contestantNumber)):
-                                            participant_user.tags.add(data)
-=======
                                     cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
                                     contestantNumber = 'CAC'+str(random.sample(range(1, 5), 1)[0])+str(random.sample(range(5, 10), 1)[0])+str(request.user.id)                                     
-                                    participate_user = cosmo_models.Participant.objects.create(cosmo_user=cosmo_user,
-                                    link=request.POST['youtube_link'],secondaryPhone=request.POST['secondary_phone'],
-                                    contestantNumber=contestantNumber)
+                                    
+                                    if not cosmo_models.Tags.objects.filter(title=request.user.first_name):
+                                        tags = cosmo_models.Tags.objects.create(title=request.user.first_name)
+
+                                    if not cosmo_models.Tags.objects.filter(title=request.user.last_name):
+                                        tags2 = cosmo_models.Tags.objects.create(title=request.user.last_name)
+                                    if not cosmo_models.Tags.objects.filter(title=contestantNumber):
+                                        tags3 = cosmo_models.Tags.objects.create(title=contestantNumber)
+                                    if not cosmo_models.Tags.objects.filter(title=request.user.get_full_name()):
+                                        cosmo_models.Tags.objects.create(title=request.user.get_full_name())
+
+                                    participate_user = cosmo_models.Participant.objects.create(cosmo_user=cosmo_user,link=request.POST['youtube_link'],
+                                    secondaryPhone=request.POST['secondary_phone'], contestantNumber=contestantNumber)
+                                    for data in cosmo_models.Tags.objects.filter(Q(title=request.user.first_name) | Q(title=request.user.last_name) | Q(title=request.user.get_full_name()) | Q(title=contestantNumber)):
+                                        participate_user.tags.add(data)
+
                                     if participate_user:
->>>>>>> 7101b475c6b3a5c47ddc8686081b734a4a6a6fb4
                                         messages.success(request, "Congratulations. You have successfully participated in Cosmo Event. Thank You.", extra_tags="1")
                                     else:
                                         messages.success(request, "Sorry. We are unable to save the records. Please try again.", extra_tags="0")
