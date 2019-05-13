@@ -13,12 +13,6 @@
 {% if messages %}
     {% include 'cosmo_user/notification.html' %}
 {% endif %}
-<<<<<<< HEAD
-<form action="{% url 'user-logout' %}" method="post">
-    {% csrf_token %}
-    <input class="btn btn-round btn-fill" type="submit" value="Log out">
-</form>
-<a href="{% url 'participate' %}">Participate</a>
 <form name="search_participant" method="POST" action="{% url 'search' %}">
 {% csrf_token %}
 <input type="text" name="search"/>
@@ -27,6 +21,4 @@
 {{participate.0}}
 
 {{search_result}}
-=======
 {% endblock content %}
->>>>>>> 7101b475c6b3a5c47ddc8686081b734a4a6a6fb4
