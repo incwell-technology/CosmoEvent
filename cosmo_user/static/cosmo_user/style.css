@@ -467,3 +467,7 @@ input {
     margin-bottom: 20px;
   }
 }
+
+.register-form{
+  margin:unset;
+}
