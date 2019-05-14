@@ -216,7 +216,7 @@ def search(request):
         if search_result:
             context = {}
             context.update({'search_result':search_result})
-            return render(request, "cosmo_manager/verified-view.html", context=context)
+            return render(request, "cosmo_manager/search.html", context=context)
         else:
             messages.success(request, "Sorry. No result found. Please try again.", extra_tags="0")
             return HttpResponseRedirect(reverse('verified-user-view'))    
