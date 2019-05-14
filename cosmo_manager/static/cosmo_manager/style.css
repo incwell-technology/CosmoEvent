@@ -470,9 +470,23 @@ input {
 
 .home-page
 {
-  width:50% !important;
+  width: 30% !important;
+  text-align: center;
 }
 
-.home-page .home-logo
+
+.home-page-logo
 {
+  width: 71%;
+  position: absolute;
+  top: 53%;
+  opacity: 0.5;
+}
+
+.participate-btn
+{
+  text-align: center;
+  position: absolute;
+  top: 34%;
+  left: 32%;
 }

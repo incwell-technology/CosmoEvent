@@ -7,20 +7,19 @@
     {% endfor %}
 {% endif %}
 
-<div class="register-container Participation-container">
+<div class="container Participation-container">
 <form method="POST"  enctype="multipart/form-data"> 
 {% csrf_token %}
 
         <div class="form-group" id="y-link">
             <label for="your_name"
-            ><i class="fas fa-file-signature"></i
-            ></label>
-            <input type="text"  placeholder="Youtube Link" name="youtube_link" required/>
+            ><i class="fas fa-file-signature"></i></label>
+            <input type="text"  placeholder="Youtube Link" autocomplete="off" name="youtube_link" required/>
            
         </div>
         <div class="form-group">
               <label for="your_name"><i class="fas fa-phone-volume"></i></label>
-              <input type="number" placeholder="Secondary Phone" id="s-phone" required name="secondary_phone"/>
+              <input type="number" placeholder="Secondary Phone" autocomplete="off" id="s-phone" required name="secondary_phone"/>
              
             </div>
     
