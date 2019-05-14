@@ -21,7 +21,7 @@ def send_verification_email(update_details, user):
         try:
             try:
                 try:
-                    urllib.urlopen('https://www.google.com/', timeout=1)
+                    urllib.request.urlopen('https://www.google.com/', timeout=1)
                     server = smtplib.SMTP_SSL(credentials['smtp_server'], credentials['smtp_port'])
                     server.login(sender, password)
                     server.sendmail(sender, [recipient], msg.as_string())

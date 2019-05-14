@@ -174,7 +174,7 @@ def resend_code(request):
                 date = datetime.now()
                 update_details = {
                 'recipient_email': request.user.email,
-                'email_subject': 'Cosmo Event | Resend: Registration verification code.',
+                'email_subject': 'Cosmo Acoustic Challenge | Resend: Registration verification code.',
                 'email_body': f"""
                         Hi { request.user.get_full_name() }, <br/><br/>You have requested for new verification code. Your new verification code is:
                         <span style="text-align:center;text-weight:bold"><h1>{verification_code}</h1></span>
@@ -183,7 +183,7 @@ def resend_code(request):
                         Date Requested: {date.strftime("%Y-%m-%d %H:%M:%S")}<br/>
                         <br/>
                         Thank You,<br/>
-                        Cosmo Event.<br/>
+                        Cosmo Acoustic Challenge.<br/>
                         Arun Thapa Chowk, Jhamsikhel,<br/>
                         Nepal.<br/>
                         5555987, 6584658<br/>
