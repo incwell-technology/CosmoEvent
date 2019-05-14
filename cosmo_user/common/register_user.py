@@ -17,7 +17,7 @@ def register_django_user(request):
         date = datetime.now()
         update_details = {
         'recipient_email': request.POST['email'],
-        'email_subject': 'Cosmo Event | Registration verification code.',
+        'email_subject': 'Cosmo Acoustic Challenge | Registration verification code.',
         'email_body': f"""
                 Hi {request.POST['first_name']} {request.POST['last_name']},<br/><br/> You have registered in Cosmo Event. Your verification code is:
                  <span style="text-align:center;text-weight:bold"><h1>{verification_code}</h1></span><br/><br/>
@@ -26,7 +26,7 @@ def register_django_user(request):
                 Date Registered: {date.strftime("%Y-%m-%d %H:%M:%S")}<br/>
                 Note: This verification code expires soon. Please verify soon.</br>
                 Thank You,<br/>
-                Cosmo Event.<br/>
+                Cosmo Acoustic Challenge.<br/>
                 Arun Thapa Chowk, Jhamsikhel,<br/>
                 Nepal.<br/>
                 5555987, 6584658
