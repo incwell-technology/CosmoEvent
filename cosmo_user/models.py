@@ -45,12 +45,14 @@ class SingletonModel(models.Model):
         return obj
 
 participate_choice = (
-    (True, 'Allow Participant'),
-    (False, 'Block Participant'),
+    ('1', 'Allow Participant'),
+    ('2', 'Block Participant'),
+    ('3', 'Cast Vote'),
+    ('4', 'Stop Vote'),
 )
 
 class CanParticipate(SingletonModel):
-    can_participate = models.BooleanField(max_length=1, choices=participate_choice, null=False, blank=False, default=True)
+    can_participate = models.CharField(max_length=10, choices=participate_choice, null=False, blank=False)
 
     def __str__(self):
         return f'{self.can_participate}'

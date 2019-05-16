@@ -8,10 +8,10 @@ from datetime import datetime
 import socket
 import urllib
 
+
 def resend_verification_email(update_details, cosmo_user, verification_code):
-
+    
     try:
-
         credentials = yaml.load(open('credentials.yaml'), Loader=yaml.FullLoader)
         sender = credentials['cosmo_admin_email']
         password = credentials['cosmo_admin_password']
@@ -42,3 +42,4 @@ def resend_verification_email(update_details, cosmo_user, verification_code):
             return False
     except socket.gaierror:
         return False
+
