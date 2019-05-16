@@ -340,3 +340,10 @@ def admin_selected(request, id):
         messages.success(request, "Participate not found.", extra_tags="1")
         return HttpResponseRedirect(reverse('admin-participates'))
         
+
+
+def admin_login(request):
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "cosmo_manager/admin/login.html")

@@ -8,7 +8,7 @@ urlpatterns = [
     path('resend-code', cosmo_manager_views.resend_code, name="resend-code"),
     path('search', cosmo_manager_views.search, name="search"),
     path('like-video/<int:id>', cosmo_manager_views.like_video, name="like-video"),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('admin/login',cosmo_manager_views.admin_login, name="admin-login"),
     path('admin', cosmo_manager_views.admin, name="admin"),
     path('admin-users', cosmo_manager_views.admin_users, name="admin-users"),
     path('admin-users-csv', cosmo_manager_views.admin_users_csv, name="admin-users-csv"),

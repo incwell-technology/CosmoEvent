@@ -31,6 +31,7 @@
                 <li {% if request.path == "/home/admin-users" %} class="active" {% endif %}><a href="{% url 'admin-users' %}">Users</a></li>
                 <li {% if request.path == "/home/admin-participates" %} class="active" {% endif %}><a href="{% url 'admin-participates' %}">Participates</a></li> 
                 <li><a href="#">Graph</a></li> 
+                <li><a href="{% url 'logout' %}">Logout</a></li> 
 
             </ul>
             </div>
