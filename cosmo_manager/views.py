@@ -15,6 +15,9 @@ from django.urls import reverse_lazy
 from random import randint
 import random
 from django.db.models import Q
+import csv
+import calendar
+from datetime import datetime
 
 
 def verified_user_view(request):
@@ -43,6 +46,7 @@ def verified_user_view(request):
                 return render(request, "cosmo_manager/verified-view.html", context=context)
             elif participate_status == "2":
                 return render(request, "cosmo_manager/participation-blocked.html")
+        
         else:
             return render(request, "cosmo_manager/not-verified-view.html")
     except cosmo_models.CosmoUser.DoesNotExist:
@@ -249,3 +253,90 @@ def like_video(request, id):
         return 
     except cosmo_models.Participant.DoesNotExist:
         pass
+
+
+def admin(request):
+    context = {}
+    cosmo_users = cosmo_models.CosmoUser.objects.all().count()
+    participates = cosmo_models.Participant.objects.all().count()
+    context.update({'users':cosmo_users})
+    context.update({'participates':participates})
+    return render(request, "cosmo_manager/admin/index.html", context=context)
+
+
+def admin_users(request):
+    return render(request, "cosmo_manager/admin/users.html")
+
+
+def admin_users_csv(request):
+    today_month = datetime.today().month
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('user-login'))
+
+    all_users = cosmo_manager.get_all_users()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="All Users {calendar.month_name[today_month]}.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Full Name', 'Email', 'Primary Phone', 'Participated', 'Voting Left', 'Verified', 'Date Joined'])    
+    counter = 1
+    add_row = []
+    print(all_users)
+    for value in all_users:
+        for j,k in value.items():
+            if counter <= 7:
+                add_row.append(k)
+                counter+=1
+        writer.writerow(add_row)
+        counter=1    
+        add_row = []
+    return response
+
+
+def admin_participates(request):
+    participates = cosmo_models.Participant.objects.order_by('-selected').all()
+    context = {}
+    context.update({'participates':participates})
+    return render(request, "cosmo_manager/admin/participates.html", context=context)
+
+
+def admin_participates_csv(request):
+    today_month = datetime.today().month
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('user-login'))
+
+    all_users = cosmo_manager.get_all_participates()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="All Participates {calendar.month_name[today_month]}.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Full Name', 'Vote','Contestant Number', 'Secondary Phone', 'Selected', 'Youtube Link', 'Voting Video'])    
+    counter = 1
+    add_row = []
+    for value in all_users:
+        for j,k in value.items():
+            if counter <= 6:
+                add_row.append(k)
+                counter+=1
+        writer.writerow(add_row)
+        counter=1    
+        add_row = []
+    return response
+
+
+def admin_selected(request, id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('user-login'))
+
+    try:
+        user_data = cosmo_models.Participant.objects.get(id=id)
+        if not user_data.selected:
+            user_data.selected = True
+            user_data.save()
+
+        messages.success(request, str(user_data.contestantNumber)+"-"+str(user_data.cosmo_user.user.get_full_name())+" has been selected.", extra_tags="1")
+        return HttpResponseRedirect(reverse('admin-participates'))
+    except cosmo_models.Participant.DoesNotExist:
+        messages.success(request, "Participate not found.", extra_tags="1")
+        return HttpResponseRedirect(reverse('admin-participates'))
+        

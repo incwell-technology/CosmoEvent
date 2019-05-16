@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'cosmo_user/assets/css/bootstrap.min.css' %}">
+    <script src="{% static 'cosmo_user/assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'cosmo_user/assets/js/bootstrap.min.js' %}"></script>
+    {% block datatable_css %}
+
+    {% endblock datatable_css %}
+    <link rel="stylesheet" href="{% static 'cosmo_manager/assets/css/style.css' %}">
+    <title>Cosmo Acoustic Challenge | Admin</title>
+</head>
+<body>
+   <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
+            </button>
+            <a class="navbar-brand" href="#">Cosmo Acoustic Admin</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li {% if request.path == "/home/admin" %} class="active" {% endif %}><a href="{% url 'admin' %}">Home</a></li>
+                <li {% if request.path == "/home/admin-users" %} class="active" {% endif %}><a href="{% url 'admin-users' %}">Users</a></li>
+                <li {% if request.path == "/home/admin-participates" %} class="active" {% endif %}><a href="{% url 'admin-participates' %}">Participates</a></li> 
+                <li><a href="#">Graph</a></li> 
+
+            </ul>
+            </div>
+        </div>
+    </nav>
+    {% block content %}
+        
+    {% endblock content %}
+
+    {% block datatable_js %}
+    
+    {% endblock datatable_js %} 
+</body>
+</html>

@@ -1,0 +1,106 @@
+{% extends "cosmo_manager/admin/base.html" %}
+{% load static %}
+{% block datatable_css %}
+  <link rel="stylesheet" href="{% static 'cosmo_manager/assets/css/datatable.css' %}">
+{% endblock datatable_css %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="well">
+            <a href="{% url 'admin-participates-csv' %}" class="btn btn-success"> Generate Participates CSV </a>
+        </div>
+
+        <div class="container">
+        <div class="row">
+        {% if messages %}
+            {% for msg in messages %}
+                {% if msg.tags == "1 success"  %}
+                    <div class="alert alert-success alert-dismissible" style="bottom:0px;opacity:1;position:absolute;left:0;right:0;text-align:center;">
+                        <a href="#" class="close" style="margin-right:10px" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{msg}}
+                    </div>
+                {% elif msg.tags == "0 success" %}
+                    <div class="alert alert-danger alert-dismissible" style="bottom:0px;opacity:1;position:absolute;left:0;right:0;text-align:center;">
+                        <a href="#" class="close" style="margin-right:10px" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{msg}}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </div>
+        <div class="row">
+            <div class="col-md-12  mx-auto">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">All Participates
+                        </h4>
+                        
+                    </div>
+                    <div class="content">
+                        <div class="box">
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>Full Name</th>
+                                        <th>Contestant Number</th>
+                                        <th>Vote</th>
+                                        <th>Selection</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for data in participates %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{data.cosmo_user.user.get_full_name}}</td>
+                                            <td>{{data.contestantNumber}}</td>
+                                            <td>{{data.vote}}</td>
+                                            <td>
+                                                {% if data.selected %}
+                                                    <form method="post" name="select">
+                                                    {% csrf_token %}
+                                                        <a href="#" class="btn btn-success btn-sm">Selected</a>
+                                                    </form>
+                                                {% else %}
+                                                    <form name="notSelect" method="post" action="/home/admin-selected/{{data.id}}">
+                                                    {% csrf_token %}
+                                                        <input type="submit" value="Not Selected" onClick='return confirm(`Is "{{data.contestantNumber}} - {{data.cosmo_user.user.get_full_name}}" selected ?`)' class="btn btn-danger btn-sm"></a>
+                                                    </form>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock content %}
+
+{% block datatable_js %}
+<script src="{% static 'cosmo_manager/assets/js/jquery.datatable.js' %}"></script>
+<script src="{% static 'cosmo_manager/assets/js/datatable.js' %}"></script>
+
+<script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+  })
+</script>
+{% endblock datatable_js %}

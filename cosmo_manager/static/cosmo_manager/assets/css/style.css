@@ -1,0 +1,14 @@
+.index-badge-green
+{
+    background-color:green;
+}
+
+.index-badge-red
+{
+    background-color: #0071bb; 
+}
+
+.index-badge-green , .index-badge-red
+{
+    color:white;
+}

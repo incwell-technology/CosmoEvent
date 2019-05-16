@@ -131,3 +131,5 @@ EMAIL_HOST_USER = credentials['cosmo_admin_email']
 EMAIL_HOST_PASSWORD = credentials['cosmo_admin_password']
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = credentials['cosmo_admin_email']
+
+LOGIN_REDIRECT_URL = 'admin'
