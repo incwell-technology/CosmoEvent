@@ -25,21 +25,24 @@ def verified_user_view(request):
     try:
         cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
         if cosmo_user.verified:
-            participate_instance = cosmo_models.Participant.objects.none()
-            participate_list = []
-            try:
-                participate_instance = cosmo_models.Participant.objects.get(cosmo_user=cosmo_user)
-                participate_list.append({
-                    'youtube_link':participate_instance.link,
-                    # 'photo':participate_instance.photo.url.split('/static/')[1],
-                    'vote':participate_instance.vote
-                })
-            except cosmo_models.Participant.DoesNotExist:
-                pass
-            if participate_instance:
-                context.update({'participate':participate_list})
-                context.update({'vote':cosmo_user.votingCount})
-            return render(request, "cosmo_manager/verified-view.html", context=context)
+            participate_status = cosmo_manager.can_participate()
+            if participate_status == "1":
+                participate_instance = cosmo_models.Participant.objects.none()
+                participate_list = []
+                try:
+                    participate_instance = cosmo_models.Participant.objects.get(cosmo_user=cosmo_user)
+                    participate_list.append({
+                        'youtube_link':participate_instance.link,
+                        # 'photo':participate_instance.photo.url.split('/static/')[1],
+                        'vote':participate_instance.vote
+                    })
+                except cosmo_models.Participant.DoesNotExist:
+                    pass
+                if participate_instance:
+                    context.update({'participate':participate_list})
+                return render(request, "cosmo_manager/verified-view.html", context=context)
+            elif participate_status == "2":
+                return render(request, "cosmo_manager/participation-blocked.html")
         else:
             return render(request, "cosmo_manager/not-verified-view.html")
     except cosmo_models.CosmoUser.DoesNotExist:
@@ -67,13 +70,12 @@ def participate(request):
         return HttpResponseRedirect(reverse('user-login'))
 
     context = {}
-    can_participates = cosmo_models.CanParticipate.objects.get(id=1)
-    if can_participates.can_participate:
+    can_participates = cosmo_manager.can_participate()
+    if can_participates == '1':
         try:
             cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
             if cosmo_manager.is_verified(cosmo_user):
-                can_participates = cosmo_models.CanParticipate.objects.all()
-                if can_participates:
+                if can_participates == '1':
                     if request.method == "POST":
                         is_participated_user = cosmo_models.Participant.objects.filter(cosmo_user=cosmo_user).exists()
                         if is_participated_user:

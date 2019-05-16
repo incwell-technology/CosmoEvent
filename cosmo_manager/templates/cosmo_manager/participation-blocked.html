@@ -1,0 +1,16 @@
+{% extends "cosmo_manager/base.html" %}
+{% load static %}
+{% block content %}
+ <div id="text-area">
+    <h3 class="welcome-text">Welcome, {{ request.user.get_full_name | title }}</h3>
+    <div class="form-group" id="register-button">
+    <p>Participation time has been finished.</p>
+    </div>
+</div>
+<div class="home-page">
+    <img src="{% static 'cosmo_manager/images/logo.png' %}" class="home-page-logo"/>
+</div>
+{% if messages %}
+    {% include 'cosmo_user/notification.html' %}
+{% endif %}
+{% endblock content %}
