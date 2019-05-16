@@ -7,10 +7,13 @@
     <title>Document</title>
 </head>
 <body>
+
+    Vote left: {{vote}}<br/>
+    <input type="hidden" name="need_to_search" value="{{recently_searched}}"/>
 {% for result in search_result %}
     {{result.cosmo_user.user.get_full_name}}:<br/>
     Youtube:{{result.link}}<br/><br/>
-    Like: <a href=""><button>Like</button></a>
+    Like: <a href="{% url 'like-video' result.id %}"><button>Like</button></a><br/><br/>   
 {% endfor %}
 </body>
 </html>

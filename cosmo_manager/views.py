@@ -38,6 +38,7 @@ def verified_user_view(request):
                 pass
             if participate_instance:
                 context.update({'participate':participate_list})
+                context.update({'vote':cosmo_user.votingCount})
             return render(request, "cosmo_manager/verified-view.html", context=context)
         else:
             return render(request, "cosmo_manager/not-verified-view.html")
@@ -216,6 +217,8 @@ def search(request):
         if search_result:
             context = {}
             context.update({'search_result':search_result})
+            context.update({'recently_searched':request.POST['search']})
+            context.update({'vote':cosmo_user.votingCount})
             return render(request, "cosmo_manager/search.html", context=context)
         else:
             messages.success(request, "Sorry. No result found. Please try again.", extra_tags="0")
@@ -223,3 +226,24 @@ def search(request):
     except cosmo_models.Participant.DoesNotExist:
         messages.success(request, "Sorry. No result found. Please try again.", extra_tags="0")
         return HttpResponseRedirect(reverse('verified-user-view'))
+
+
+def like_video(request, id):
+    try:
+        context = {}
+        cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+        participate_instance = cosmo_models.Participant.objects.get(id=id)
+        search_result = cosmo_models.Participant.objects.filter(tags__title__icontains=request.POST['need_to_search']).distinct()
+        if not participate_instance:
+            messages.success(request, "Contestant not found.", extra_tags="0")
+        else:
+            participate_instance.vote = participate_instance.vote+1
+            participate_instance.save()
+            cosmo_user.votingCount = cosmo_user.votingCount-1
+            cosmo_user.save()
+            messages.success(request, "Thank you for voting.", extra_tags="1")
+        context.update({'search_result':search_result})
+        context.update({'vote':cosmo_user.votingCount})
+        return 
+    except cosmo_models.Participant.DoesNotExist:
+        pass
