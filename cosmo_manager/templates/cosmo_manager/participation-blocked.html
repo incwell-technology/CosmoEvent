@@ -4,7 +4,7 @@
  <div id="text-area">
     <h3 class="welcome-text">Welcome, {{ request.user.get_full_name | title }}</h3>
     <div class="form-group" id="register-button">
-    <a href="{% url 'participate' %}"> <button type="submit" class="btn participate-btn">Participate</button></a>
+    <p>Participation time has been finished.</p>
     </div>
 </div>
 <div class="home-page">
@@ -13,9 +13,4 @@
 {% if messages %}
     {% include 'cosmo_user/notification.html' %}
 {% endif %}
-<form name="search_participant" method="POST" action="{% url 'search' %}">
-{% csrf_token %}
-<input type="text" name="search"/>
-<button type="submit"> Search </button>
-</form>
 {% endblock content %}

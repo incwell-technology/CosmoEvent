@@ -15,6 +15,9 @@ from django.urls import reverse_lazy
 from random import randint
 import random
 from django.db.models import Q
+import csv
+import calendar
+from datetime import datetime
 
 
 def verified_user_view(request):
@@ -25,20 +28,25 @@ def verified_user_view(request):
     try:
         cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
         if cosmo_user.verified:
-            participate_instance = cosmo_models.Participant.objects.none()
-            participate_list = []
-            try:
-                participate_instance = cosmo_models.Participant.objects.get(cosmo_user=cosmo_user)
-                participate_list.append({
-                    'youtube_link':participate_instance.link,
-                    # 'photo':participate_instance.photo.url.split('/static/')[1],
-                    'vote':participate_instance.vote
-                })
-            except cosmo_models.Participant.DoesNotExist:
-                pass
-            if participate_instance:
-                context.update({'participate':participate_list})
-            return render(request, "cosmo_manager/verified-view.html", context=context)
+            participate_status = cosmo_manager.can_participate()
+            if participate_status == "1":
+                participate_instance = cosmo_models.Participant.objects.none()
+                participate_list = []
+                try:
+                    participate_instance = cosmo_models.Participant.objects.get(cosmo_user=cosmo_user)
+                    participate_list.append({
+                        'youtube_link':participate_instance.link,
+                        # 'photo':participate_instance.photo.url.split('/static/')[1],
+                        'vote':participate_instance.vote
+                    })
+                except cosmo_models.Participant.DoesNotExist:
+                    pass
+                if participate_instance:
+                    context.update({'participate':participate_list})
+                return render(request, "cosmo_manager/verified-view.html", context=context)
+            elif participate_status == "2":
+                return render(request, "cosmo_manager/participation-blocked.html")
+        
         else:
             return render(request, "cosmo_manager/not-verified-view.html")
     except cosmo_models.CosmoUser.DoesNotExist:
@@ -66,13 +74,12 @@ def participate(request):
         return HttpResponseRedirect(reverse('user-login'))
 
     context = {}
-    can_participates = cosmo_models.CanParticipate.objects.get(id=1)
-    if can_participates.can_participate:
+    can_participates = cosmo_manager.can_participate()
+    if can_participates == '1':
         try:
             cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
             if cosmo_manager.is_verified(cosmo_user):
-                can_participates = cosmo_models.CanParticipate.objects.all()
-                if can_participates:
+                if can_participates == '1':
                     if request.method == "POST":
                         is_participated_user = cosmo_models.Participant.objects.filter(cosmo_user=cosmo_user).exists()
                         if is_participated_user:
@@ -174,7 +181,7 @@ def resend_code(request):
                 date = datetime.now()
                 update_details = {
                 'recipient_email': request.user.email,
-                'email_subject': 'Cosmo Event | Resend: Registration verification code.',
+                'email_subject': 'Cosmo Acoustic Challenge | Resend: Registration verification code.',
                 'email_body': f"""
                         Hi { request.user.get_full_name() }, <br/><br/>You have requested for new verification code. Your new verification code is:
                         <span style="text-align:center;text-weight:bold"><h1>{verification_code}</h1></span>
@@ -183,7 +190,7 @@ def resend_code(request):
                         Date Requested: {date.strftime("%Y-%m-%d %H:%M:%S")}<br/>
                         <br/>
                         Thank You,<br/>
-                        Cosmo Event.<br/>
+                        Cosmo Acoustic Challenge.<br/>
                         Arun Thapa Chowk, Jhamsikhel,<br/>
                         Nepal.<br/>
                         5555987, 6584658<br/>
@@ -216,10 +223,127 @@ def search(request):
         if search_result:
             context = {}
             context.update({'search_result':search_result})
-            return render(request, "cosmo_manager/verified-view.html", context=context)
+            context.update({'recently_searched':request.POST['search']})
+            context.update({'vote':cosmo_user.votingCount})
+            return render(request, "cosmo_manager/search.html", context=context)
         else:
             messages.success(request, "Sorry. No result found. Please try again.", extra_tags="0")
             return HttpResponseRedirect(reverse('verified-user-view'))    
     except cosmo_models.Participant.DoesNotExist:
         messages.success(request, "Sorry. No result found. Please try again.", extra_tags="0")
         return HttpResponseRedirect(reverse('verified-user-view'))
+
+
+def like_video(request, id):
+    try:
+        context = {}
+        cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+        participate_instance = cosmo_models.Participant.objects.get(id=id)
+        search_result = cosmo_models.Participant.objects.filter(tags__title__icontains=request.POST['need_to_search']).distinct()
+        if not participate_instance:
+            messages.success(request, "Contestant not found.", extra_tags="0")
+        else:
+            participate_instance.vote = participate_instance.vote+1
+            participate_instance.save()
+            cosmo_user.votingCount = cosmo_user.votingCount-1
+            cosmo_user.save()
+            messages.success(request, "Thank you for voting.", extra_tags="1")
+        context.update({'search_result':search_result})
+        context.update({'vote':cosmo_user.votingCount})
+        return 
+    except cosmo_models.Participant.DoesNotExist:
+        pass
+
+
+def admin(request):
+    context = {}
+    cosmo_users = cosmo_models.CosmoUser.objects.all().count()
+    participates = cosmo_models.Participant.objects.all().count()
+    context.update({'users':cosmo_users})
+    context.update({'participates':participates})
+    return render(request, "cosmo_manager/admin/index.html", context=context)
+
+
+def admin_users(request):
+    return render(request, "cosmo_manager/admin/users.html")
+
+
+def admin_users_csv(request):
+    today_month = datetime.today().month
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('user-login'))
+
+    all_users = cosmo_manager.get_all_users()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="All Users {calendar.month_name[today_month]}.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Full Name', 'Email', 'Primary Phone', 'Participated', 'Voting Left', 'Verified', 'Date Joined'])    
+    counter = 1
+    add_row = []
+    print(all_users)
+    for value in all_users:
+        for j,k in value.items():
+            if counter <= 7:
+                add_row.append(k)
+                counter+=1
+        writer.writerow(add_row)
+        counter=1    
+        add_row = []
+    return response
+
+
+def admin_participates(request):
+    participates = cosmo_models.Participant.objects.order_by('-selected').all()
+    context = {}
+    context.update({'participates':participates})
+    return render(request, "cosmo_manager/admin/participates.html", context=context)
+
+
+def admin_participates_csv(request):
+    today_month = datetime.today().month
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('user-login'))
+
+    all_users = cosmo_manager.get_all_participates()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="All Participates {calendar.month_name[today_month]}.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Full Name', 'Vote','Contestant Number', 'Secondary Phone', 'Selected', 'Youtube Link', 'Voting Video'])    
+    counter = 1
+    add_row = []
+    for value in all_users:
+        for j,k in value.items():
+            if counter <= 6:
+                add_row.append(k)
+                counter+=1
+        writer.writerow(add_row)
+        counter=1    
+        add_row = []
+    return response
+
+
+def admin_selected(request, id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('user-login'))
+
+    try:
+        user_data = cosmo_models.Participant.objects.get(id=id)
+        if not user_data.selected:
+            user_data.selected = True
+            user_data.save()
+
+        messages.success(request, str(user_data.contestantNumber)+"-"+str(user_data.cosmo_user.user.get_full_name())+" has been selected.", extra_tags="1")
+        return HttpResponseRedirect(reverse('admin-participates'))
+    except cosmo_models.Participant.DoesNotExist:
+        messages.success(request, "Participate not found.", extra_tags="1")
+        return HttpResponseRedirect(reverse('admin-participates'))
+        
+
+
+def admin_login(request):
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "cosmo_manager/admin/login.html")

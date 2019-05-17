@@ -1,0 +1,24 @@
+{% extends "cosmo_manager/admin/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="well index-badge-green">
+                <h5> <b>COSMO USERS</b> </h5>
+                <h1>{{users}}</h1>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="well index-badge-red">
+                <h5><b>PARTICIPANTS</b> </h5>
+            <h1>{{participates}}</h1>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            
+        </div>
+    </div>
+</div>
+{% endblock content %}

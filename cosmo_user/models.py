@@ -22,6 +22,11 @@ class Tags(models.Model):
         return f'{self.title}'
 
         
+selected_choice = (
+    (True, 'Is Selected'),
+    (False, 'Not Selected')
+)
+
 class Participant(models.Model):
     cosmo_user = models.OneToOneField(CosmoUser, on_delete=models.CASCADE, related_name="cosmo_participant")
     photo = models.ImageField(upload_to='cosmo_user/static/cosmo_user/site-data/profile-pictures', null=True, blank=True)
@@ -31,6 +36,7 @@ class Participant(models.Model):
     secondaryPhone = models.IntegerField(null=False, blank=False, default="984000000")
     contestantNumber = models.CharField(max_length=800, null=False, blank=False)
     tags = models.ManyToManyField(Tags,related_name="participant_tags")
+    selected = models.BooleanField(choices=selected_choice, null=False, blank=False, default=False)
 
     def __str__(self):
         return f'{self.cosmo_user.user.get_full_name()}'
@@ -53,12 +59,14 @@ class SingletonModel(models.Model):
         return obj
 
 participate_choice = (
-    (True, 'Allow Participant'),
-    (False, 'Block Participant'),
+    ('1', 'Allow Participant'),
+    ('2', 'Block Participant'),
+    ('3', 'Cast Vote'),
+    ('4', 'Stop Vote'),
 )
 
 class CanParticipate(SingletonModel):
-    can_participate = models.BooleanField(max_length=1, choices=participate_choice, null=False, blank=False, default=True)
+    can_participate = models.CharField(max_length=10, choices=participate_choice, null=False, blank=False)
 
     def __str__(self):
         return f'{self.can_participate}'
