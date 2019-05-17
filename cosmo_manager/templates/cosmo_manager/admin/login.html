@@ -11,6 +11,21 @@
 </head>
 <body style="margin-top:10%">
     	<div class="container">
+            {% if messages %}
+                {% for msg in messages %}
+                    {% if msg.tags == "1 success"  %}
+                        <div class="alert alert-success alert-dismissible" style="bottom:0px;opacity:1;position:absolute;left:0;right:0;text-align:center;">
+                            <a href="#" class="close" style="margin-right:10px" data-dismiss="alert" aria-label="close">&times;</a>
+                            {{msg}}
+                        </div>
+                    {% elif msg.tags == "0 success" %}
+                        <div class="alert alert-danger alert-dismissible" style="bottom:0px;opacity:1;position:absolute;left:0;right:0;text-align:center;">
+                            <a href="#" class="close" style="margin-right:10px" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{msg}}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
                 <div class="d-flex justify-content-center h-100">
                     <div class="user_card">
                         <div class="d-flex justify-content-center">
@@ -19,23 +34,25 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center form_container">
-                            <form>
+                            <form method="POST">
+                            {% csrf_token %}
                                 <div class="input-group">
                                     <div class="input-group-append">
                                     </div>
-                                    <input type="text" name="" class="form-control input_user" value="" placeholder="username">
+                                    <input type="text" name="username" class="form-control input_user" value="" placeholder="username">
                                 </div>
                                 <div class="input-group mb-2">
                                     <br/>
-                                    <input type="password" name="" class="form-control input_pass" value="" placeholder="password">
+                                    <input type="password" name="password" class="form-control input_pass" value="" placeholder="password">
                                 </div>
                                 <div class="form-group">
                                 </div>
+                                <div class="d-flex justify-content-center mt-10 login_container">
+                            <button type="submit" name="button" class="btn login_btn">Login</button>
+                        </div>
                             </form>
                         </div>
-                        <div class="d-flex justify-content-center mt-10 login_container">
-                            <button type="button" name="button" class="btn login_btn">Login</button>
-                        </div>
+                        
                         
                     </div>
                 </div>
