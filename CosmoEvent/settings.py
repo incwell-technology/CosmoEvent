@@ -133,3 +133,4 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = credentials['cosmo_admin_email']
 
 LOGIN_REDIRECT_URL = 'admin'
+LOGOUT_REDIRECT_URL = '/home/admin'

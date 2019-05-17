@@ -65,3 +65,13 @@ def get_all_participates():
         })
 
     return participate_list
+
+
+def is_admin(request):
+    try:
+        if request.user.is_superuser:
+            return True
+        else:
+            return False
+    except Exception as e:
+        return False

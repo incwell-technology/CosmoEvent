@@ -18,6 +18,8 @@ from django.db.models import Q
 import csv
 import calendar
 from datetime import datetime
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 
 def verified_user_view(request):
@@ -256,94 +258,142 @@ def like_video(request, id):
 
 
 def admin(request):
-    context = {}
-    cosmo_users = cosmo_models.CosmoUser.objects.all().count()
-    participates = cosmo_models.Participant.objects.all().count()
-    context.update({'users':cosmo_users})
-    context.update({'participates':participates})
-    return render(request, "cosmo_manager/admin/index.html", context=context)
-
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('admin-login'))
+    
+    if cosmo_manager.is_admin(request):
+        context = {}
+        cosmo_users = cosmo_models.CosmoUser.objects.all().count()
+        participates = cosmo_models.Participant.objects.all().count()
+        context.update({'users':cosmo_users})
+        context.update({'participates':participates})
+        return render(request, "cosmo_manager/admin/index.html", context=context)
+    else:
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse('admin-login'))
 
 def admin_users(request):
-    return render(request, "cosmo_manager/admin/users.html")
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('admin-login'))
 
+    if cosmo_manager.is_admin(request):
+        return render(request, "cosmo_manager/admin/users.html")
+    else:
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse('admin-login'))
 
 def admin_users_csv(request):
     today_month = datetime.today().month
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('user-login'))
+        return HttpResponseRedirect(reverse('admin-login'))
 
-    all_users = cosmo_manager.get_all_users()
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = f'attachment; filename="All Users {calendar.month_name[today_month]}.csv"'
+    if cosmo_manager.is_admin(request):
+        all_users = cosmo_manager.get_all_users()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="All Users {calendar.month_name[today_month]}.csv"'
 
-    writer = csv.writer(response)
-    writer.writerow(['Full Name', 'Email', 'Primary Phone', 'Participated', 'Voting Left', 'Verified', 'Date Joined'])    
-    counter = 1
-    add_row = []
-    print(all_users)
-    for value in all_users:
-        for j,k in value.items():
-            if counter <= 7:
-                add_row.append(k)
-                counter+=1
-        writer.writerow(add_row)
-        counter=1    
+        writer = csv.writer(response)
+        writer.writerow(['Full Name', 'Email', 'Primary Phone', 'Participated', 'Voting Left', 'Verified', 'Date Joined'])    
+        counter = 1
         add_row = []
-    return response
+        for value in all_users:
+            for j,k in value.items():
+                if counter <= 7:
+                    add_row.append(k)
+                    counter+=1
+            writer.writerow(add_row)
+            counter=1    
+            add_row = []
+        return response
+    else:
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse('admin-login'))
 
 
 def admin_participates(request):
-    participates = cosmo_models.Participant.objects.order_by('-selected').all()
-    context = {}
-    context.update({'participates':participates})
-    return render(request, "cosmo_manager/admin/participates.html", context=context)
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('admin-login'))
 
+    if cosmo_manager.is_admin(request):
+        participates = cosmo_models.Participant.objects.order_by('-selected').all()
+        context = {}
+        context.update({'participates':participates})
+        return render(request, "cosmo_manager/admin/participates.html", context=context)
+    else:
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse('admin-login'))        
 
 def admin_participates_csv(request):
-    today_month = datetime.today().month
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('user-login'))
+        return HttpResponseRedirect(reverse('admin-login'))
+    today_month = datetime.today().month
 
-    all_users = cosmo_manager.get_all_participates()
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = f'attachment; filename="All Participates {calendar.month_name[today_month]}.csv"'
+    if cosmo_manager.is_admin(request):
+        all_users = cosmo_manager.get_all_participates()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="All Participates {calendar.month_name[today_month]}.csv"'
 
-    writer = csv.writer(response)
-    writer.writerow(['Full Name', 'Vote','Contestant Number', 'Secondary Phone', 'Selected', 'Youtube Link', 'Voting Video'])    
-    counter = 1
-    add_row = []
-    for value in all_users:
-        for j,k in value.items():
-            if counter <= 6:
-                add_row.append(k)
-                counter+=1
-        writer.writerow(add_row)
-        counter=1    
+        writer = csv.writer(response)
+        writer.writerow(['Full Name', 'Vote','Contestant Number', 'Secondary Phone', 'Selected', 'Youtube Link', 'Voting Video'])    
+        counter = 1
         add_row = []
-    return response
+        for value in all_users:
+            for j,k in value.items():
+                if counter <= 6:
+                    add_row.append(k)
+                    counter+=1
+            writer.writerow(add_row)
+            counter=1    
+            add_row = []
+        return response
+    else:
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse('admin-login'))   
 
 
 def admin_selected(request, id):
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('user-login'))
+        return HttpResponseRedirect(reverse('admin-login'))
 
-    try:
-        user_data = cosmo_models.Participant.objects.get(id=id)
-        if not user_data.selected:
-            user_data.selected = True
-            user_data.save()
+    if cosmo_manager.is_admin(request):
 
-        messages.success(request, str(user_data.contestantNumber)+"-"+str(user_data.cosmo_user.user.get_full_name())+" has been selected.", extra_tags="1")
-        return HttpResponseRedirect(reverse('admin-participates'))
-    except cosmo_models.Participant.DoesNotExist:
-        messages.success(request, "Participate not found.", extra_tags="1")
-        return HttpResponseRedirect(reverse('admin-participates'))
-        
+        try:
+            user_data = cosmo_models.Participant.objects.get(id=id)
+            if not user_data.selected:
+                user_data.selected = True
+                user_data.save()
+
+            messages.success(request, str(user_data.contestantNumber)+"-"+str(user_data.cosmo_user.user.get_full_name())+" has been selected.", extra_tags="1")
+            return HttpResponseRedirect(reverse('admin-participates'))
+        except cosmo_models.Participant.DoesNotExist:
+            messages.success(request, "Participate not found.", extra_tags="1")
+            return HttpResponseRedirect(reverse('admin-participates'))
+    else:
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse('admin-login'))   
 
 
 def admin_login(request):
     if request.method == "POST":
-        pass
+        try:
+            user = authenticate(request, username=request.POST["username"], password=request.POST["password"])
+            if user is None:
+                messages.success(request, "Invalid Credentials", extra_tags="0")
+                return HttpResponseRedirect(reverse('admin-login'))
+            elif user.is_superuser:
+                login(request, user)
+                return HttpResponseRedirect(reverse('admin'))
+            else:
+                messages.success(request, "Invalid Credentials", extra_tags="0")
+                return HttpResponseRedirect(reverse('admin-login'))
+        except Exception as e:
+            messages.success(request, "Invalid Credentials", extra_tags="0")
+            return HttpResponseRedirect(reverse('admin-login'))
     else:
         return render(request, "cosmo_manager/admin/login.html")
