@@ -75,3 +75,18 @@ def is_admin(request):
             return False
     except Exception as e:
         return False
+
+
+def get_participates_for_vote():
+    participates = cosmo_model.Participant.objects.all()
+    participate_list = []
+
+    for data in participates:
+        participate_list.append({
+            'id':data.id,
+            'fullName':data.cosmo_user.user.get_full_name(),
+            'contestantNumber':data.contestantNumber,
+            'videoLink':data.voteVideo_link,
+        })
+
+    return participate_list
