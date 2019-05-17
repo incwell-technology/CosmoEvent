@@ -2,7 +2,7 @@
 {% load static %}
   <head>
     <title>
-      Cosmo acoustic
+      Cosmo Acoustic Challenge
     </title>
 
     <meta charset="utf-8" />
@@ -40,6 +40,9 @@
         <div class="nav-bar">
           <span id="open-btn" onclick="openNav()">&#9776;</span>
           <p class="title" style="color:#e6b220;font-size:18px;">Cosmo Acoustic Challenge</p>
+          {% block search %}
+             
+          {% endblock search %}
         </div>
 
         <div id="myNav" class="overlay">
