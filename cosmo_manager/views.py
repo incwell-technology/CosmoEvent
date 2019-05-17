@@ -397,3 +397,25 @@ def admin_login(request):
             return HttpResponseRedirect(reverse('admin-login'))
     else:
         return render(request, "cosmo_manager/admin/login.html")
+
+
+def admin_notSelected(request, id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('admin-login'))
+
+    if cosmo_manager.is_admin(request):
+        try:
+            user_data = cosmo_models.Participant.objects.get(id=id)
+            if user_data.selected:
+                user_data.selected = False
+                user_data.save()
+
+            messages.success(request, str(user_data.contestantNumber)+"-"+str(user_data.cosmo_user.user.get_full_name())+" has not been selected.", extra_tags="1")
+            return HttpResponseRedirect(reverse('admin-participates'))
+        except cosmo_models.Participant.DoesNotExist:
+            messages.success(request, "Participate not found.", extra_tags="1")
+            return HttpResponseRedirect(reverse('admin-participates'))
+    else:
+        if request.user.is_authenticated:
+            logout(request)
+        return HttpResponseRedirect(reverse('admin-login'))   

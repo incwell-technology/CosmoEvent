@@ -60,14 +60,14 @@
                                             <td>{{data.vote}}</td>
                                             <td>
                                                 {% if data.selected %}
-                                                    <form method="post" name="select">
+                                                    <form method="post" name="select" action="/home/admin/admin-notSelected/{{data.id}}">
                                                     {% csrf_token %}
-                                                        <a href="#" class="btn btn-success btn-sm">Selected</a>
+                                                        <input type="submit" value="Selected" onClick='return confirm(`Is "{{data.contestantNumber}} - {{data.cosmo_user.user.get_full_name}}" is not selected ?`)' class="btn btn-success btn-sm"/>
                                                     </form>
                                                 {% else %}
-                                                    <form name="notSelect" method="post" action="/home/admin-selected/{{data.id}}">
+                                                    <form name="notSelect" method="post" action="/home/admin/admin-selected/{{data.id}}">
                                                     {% csrf_token %}
-                                                        <input type="submit" value="Not Selected" onClick='return confirm(`Is "{{data.contestantNumber}} - {{data.cosmo_user.user.get_full_name}}" selected ?`)' class="btn btn-danger btn-sm"></a>
+                                                        <input type="submit" value="Not Selected" onClick='return confirm(`Is "{{data.contestantNumber}} - {{data.cosmo_user.user.get_full_name}}" selected ?`)' class="btn btn-danger btn-sm">
                                                     </form>
                                                 {% endif %}
                                             </td>

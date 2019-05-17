@@ -15,5 +15,6 @@ urlpatterns = [
     path('admin/admin-participates', cosmo_manager_views.admin_participates, name="admin-participates"),
     path('admin/admin-participates-csv', cosmo_manager_views.admin_participates_csv, name="admin-participates-csv"),
     path('admin/admin-selected/<int:id>', cosmo_manager_views.admin_selected, name="admin-selected"),
+    path('admin/admin-notSelected/<int:id>', cosmo_manager_views.admin_notSelected, name="admin-notSelected"),
 ]
 
