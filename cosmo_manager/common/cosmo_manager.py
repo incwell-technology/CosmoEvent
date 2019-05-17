@@ -9,3 +9,9 @@ def is_verified(cosmo_user):
 
 def can_resend_code(cosmo_user):
     return True
+
+
+def can_participate():
+    instance = cosmo_model.CanParticipate.objects.get(id=1)
+    print('asdasdsad',instance)
+    return instance.can_participate
