@@ -82,11 +82,12 @@ def get_participates_for_vote():
     participate_list = []
 
     for data in participates:
-        participate_list.append({
+        if data.selected:
+            participate_list.append({
             'id':data.id,
             'fullName':data.cosmo_user.user.get_full_name(),
             'contestantNumber':data.contestantNumber,
             'videoLink':data.voteVideo_link,
-        })
+            })
 
     return participate_list
