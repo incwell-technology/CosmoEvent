@@ -1,0 +1,195 @@
+{% extends "cosmo_manager/base.html" %}
+{% block search %}
+        <i
+    class="fa fa-search"
+    id="open-search-btn"
+    data-toggle="modal"
+    data-target="#myModal"
+    ></i>
+{% endblock search %}
+
+{% block content %}
+<div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                  &times;
+                </button>
+                <h4 class="modal-title">Search</h4>
+              </div>
+              <div class="modal-body">
+                <p>Search contestants by their contestant id or their names.</p>
+                <form method="POST" action="/home/search">
+                {% csrf_token %}
+                  <input type="text" name="search" class="search-text" />
+                  <button class="searcher"><i class="fa fa-search"></i></button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+ <div class="vote-container">
+          <div class="frame-content">
+            <iframe
+              width="90%"
+              height="250"
+              src="https://www.youtube.com/embed/?autoplay=1"
+              allow="autoplay"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+          <div class="contestant-content">
+            <div class="text-item">
+              <p>Contestant No.:</p>
+              <p>Contestant Name</p>
+              <p>Votes left:<span>10</span></p>
+            </div>
+            <div class="img-item">
+              <img src="https://img.youtube.com/vi/TXQaoKMphw4/0.jpg" />
+            </div>
+          </div>
+          <form action="vote.html" class="vote-form">
+            <div class="center-vote">
+              <button type="submit" class="btn">Vote Now</button>
+            </div>
+          </form>
+          <div class="contestant-list">
+            <h4>You may like</h4>
+            <div class="list-content">
+              <div class="list-item">
+                <div class="contestant-image-container">
+                  <span class="helper"></span>
+                  <img src="images/pp.jpg" class="contestant-image" />
+                </div>
+                <div class="contestant-description">
+                  <div>001</div>
+                  <div>Saijal Shakya</div>
+                </div>
+              </div>
+              <div class="list-item">
+                <div class="contestant-image-container">
+                  <span class="helper"></span>
+                  <img src="images/dp.jpg" class="contestant-image" />
+                </div>
+                <div class="contestant-description">
+                  <div>001</div>
+                  <div>Saijal Shakya</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <div class="contestant-image-container">
+                  <span class="helper"></span>
+                  <img src="images/pp.jpg" class="contestant-image" />
+                </div>
+                <div class="contestant-description">
+                  <div>001</div>
+                  <div>Saijal Shakya</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <div class="contestant-image-container">
+                  <span class="helper"></span>
+                  <img src="images/pp.jpg" class="contestant-image" />
+                </div>
+                <div class="contestant-description">
+                  <div>001</div>
+                  <div>Saijal Shakya</div>
+                </div>
+              </div>
+              <div class="list-item">
+                <div class="contestant-image-container">
+                  <span class="helper"></span>
+                  <img
+                    src="https://img.youtube.com/vi/TXQaoKMphw4/0.jpg"
+                    class="contestant-image"
+                  />
+                </div>
+
+                <div class="contestant-description">
+                  <div>001</div>
+                  <div>Saijal Shakya</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <div class="contestant-image-container">
+                  <span class="helper"></span>
+                  <img
+                    src="https://img.youtube.com/vi/TXQaoKMphw4/0.jpg"
+                    class="contestant-image"
+                  />
+                </div>
+                <div class="contestant-description">
+                  <div>001</div>
+                  <div>Saijal Shakya</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <div class="contestant-image-container">
+                  <span class="helper"></span>
+                  <img
+                    src="https://img.youtube.com/vi/TXQaoKMphw4/0.jpg"
+                    class="contestant-image"
+                  />
+                </div>
+                <div class="contestant-description">
+                  <div>001</div>
+                  <div>Saijal Shakya</div>
+                </div>
+              </div>
+              <div class="list-item">
+                <div class="contestant-image-container">
+                  <span class="helper"></span>
+                  <img
+                    src="https://img.youtube.com/vi/TXQaoKMphw4/0.jpg"
+                    class="contestant-image"
+                  />
+                </div>
+                <div class="contestant-description">
+                  <div>001</div>
+                  <div>Saijal Shakya</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <div class="contestant-image-container">
+                  <span class="helper"></span>
+                  <img
+                    src="https://img.youtube.com/vi/TXQaoKMphw4/0.jpg"
+                    class="contestant-image"
+                  />
+                </div>
+                <div class="contestant-description">
+                  <div>001</div>
+                  <div>Saijal Shakya</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    Vote left: {{vote}}<br/>
+    <input type="hidden" name="need_to_search" value="{{recently_searched}}"/>
+{% for result in search_result %}
+    {{result.cosmo_user.user.get_full_name}}:<br/>
+    Youtube:{{result.link}}<br/><br/>
+    Like: <a href="{% url 'like-video' result.id %}"><button>Like</button></a><br/><br/>   
+{% endfor %}
+</body>
+</html>

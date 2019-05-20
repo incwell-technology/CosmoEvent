@@ -16,3 +16,5 @@ class ParticipantAdmin(admin.ModelAdmin):
 @admin.register(cosmo_models.CanParticipate)
 class CanParticipateAdmin(admin.ModelAdmin):
     list_display = ['can_participate']
+
+admin.site.register(cosmo_models.Tags)
