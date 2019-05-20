@@ -494,3 +494,8 @@ def search_participate(request, id):
             return HttpResponseRedirect(reverse('not-verified-index'))
         else:
             return HttpResponseRedirect(reverse('verified-user-view'))
+
+
+
+def policy(request):
+    return render(request, "cosmo_manager/policy.html")
