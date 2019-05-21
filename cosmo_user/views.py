@@ -68,6 +68,9 @@ def user_register(request):
         if request.POST['phone'] == "":
             error.append('Phone number field is required.')
 
+        if cosmo_models.CosmoUser.objects.filter(primaryPhone=request.POST['phone']):
+            error.append('User with this phone number already exists.')
+
         if User.objects.filter(email=request.POST['email']).exists():
             error.append('User with this email id already exists.')
             context.update({'username':request.POST['username']})
