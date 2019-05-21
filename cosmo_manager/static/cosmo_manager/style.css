@@ -530,6 +530,9 @@ input {
   form {
     margin: unset;
   }
+  .center-aligner{
+    margin:0 auto;
+  }
   .verify-container .form-group {
     margin-top: 20px;
     width: 80%;
@@ -587,20 +590,17 @@ input {
 }
 
 .home-page {
-  width: 30% !important;
+  width: 100%;
   text-align: center;
 }
 
 .home-page-logo {
-  width: 71%;
-  position: absolute;
-  top: 53%;
+  width: 200px;
   opacity: 0.5;
 }
 
 .participate-btn {
   text-align: center;
-  position: absolute;
   top: 34%;
   left: 32%;
 }
@@ -614,3 +614,5 @@ input {
     margin: 0 auto;
   }
 }
+
+

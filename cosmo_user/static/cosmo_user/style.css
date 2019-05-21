@@ -58,6 +58,10 @@ input {
   background-color: transparent;
   outline: transparent;
 }
+.input-register
+{
+ border: none;
+}
 .p-text {
   color: #15103e;
 }
@@ -98,16 +102,14 @@ label {
   margin-left: -10px;
 }
 .w3-panel {
-  width: 70%;
+  
   text-align: center;
-  margin-left: 15%;
-  margin-right: 15%;
+  
   border-radius: 5px;
   margin-top: 16px;
   margin-bottom: 16px;
   width: 100%;
-  position: relative;
-  left: -49px;
+  
 }
 
 .panel-box {
@@ -134,6 +136,10 @@ label {
   margin-top: 20px;
   width: 60%;
   margin: 0 auto;
+}
+.form-group1{
+  margin-bottom: 15px;
+    border-bottom: 1px solid;
 }
 .logout {
   float: right;
@@ -170,7 +176,7 @@ label {
 }
 .register-container {
   margin-top: 50px;
-  margin-left: 20px;
+  
 }
 
 .register-container .fas {
@@ -181,7 +187,7 @@ label {
   margin-right: 10px;
 }
 label {
-  margin-left: 20px;
+  margin-left: 15px;
 }
 .col-sm-2 {
   margin-bottom: -10px !important;
@@ -466,8 +472,6 @@ input {
     width: 140px;
     margin-bottom: 20px;
   }
+
 }
 
-.register-form{
-  margin:unset;
-}
