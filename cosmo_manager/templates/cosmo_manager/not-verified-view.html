@@ -72,7 +72,7 @@
                 {% endfor %}
             {% endif %}
             <div class="verify-container">
-                <form action="{% url 'verify-user' %}" method="post">
+                <form action="{% url 'verify-user' %}" class="center-aligner" method="post">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="your_name"><i class="fas fa-user-check"></i></label>
@@ -91,7 +91,7 @@
                         
                     </div>
                 </form>
-                <form action="{% url 'user-logout' %}" method="post">
+                <form action="{% url 'user-logout' %}" class="center-aligner" method="post">
                     {% csrf_token %}
                     <input class="btn btn-round btn-fill" class="btn" style="width: 40%;padding: 0px;background-color: #dc3131;position: relative;color: antiquewhite;top: 0%;left: 27%;bottom: -13px;text-align: center;" type="submit" value="Log out">
                 </form>
