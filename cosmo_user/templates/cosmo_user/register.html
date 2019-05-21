@@ -39,33 +39,33 @@
           <form method="POST" class="register-form">
                 {% csrf_token %}
 
-            <div class="form-group" id="name">
+            <div class="form-group form-group1" id="name">
               <label for="your_name"
                 ><i class="fas fa-file-signature"></i
               ></label>
-              <input type="text" id="usernamee" autocomplete="off" placeholder="First Name" {% if first_name %} value="{{first_name}}" {% endif %} name="first_name"/>
+              <input class="input-register" type="text" id="usernamee" autocomplete="off" placeholder="First Name" {% if first_name %} value="{{first_name}}" {% endif %} name="first_name"/>
             </div>
-            <div class="form-group" id="name">
+            <div class="form-group form-group1" id="name">
               <label for="your_name"
                 ><i class="fas fa-file-signature"></i
               ></label>
-              <input type="text" id="usernamee" autocomplete="off" placeholder="Last Name" {% if last_name %} value="{{last_name}}" {% endif %} name="last_name"/>
+              <input class="input-register" type="text" id="usernamee" autocomplete="off" placeholder="Last Name" {% if last_name %} value="{{last_name}}" {% endif %} name="last_name"/>
             </div>
-            <div class="form-group" id="name">
+            <div class="form-group form-group1" id="name">
               <label for="your_name"><i class="fas fa-phone-volume"></i></label>
-              <input type="number" id="usernamee" autocomplete="off" placeholder="Phone number" {% if phone %} value="{{phone}}" {% endif %} name="phone"/>
+              <input class="input-register" type="number" id="usernamee" autocomplete="off" placeholder="Phone number" {% if phone %} value="{{phone}}" {% endif %} name="phone"/>
             </div>
-            <div class="form-group" id="name">
+            <div class="form-group form-group1" id="name">
               <label for="your_name"><i class="fas fa-envelope"></i></label>
-              <input type="email" id="usernamee" autocomplete="off" placeholder="Email" {% if email %} value="{{email}}" {% endif %} name="email"/>
+              <input class="input-register" type="email" id="usernamee" autocomplete="off" placeholder="Email" {% if email %} value="{{email}}" {% endif %} name="email"/>
             </div>
-            <div class="form-group" id="name">
+            <div class="form-group form-group1" id="name">
               <label for="your_name"><i class="fas fa-user"></i></label>
-              <input type="text" id="usernamee" autocomplete="off" placeholder="Username" {% if username %} value="{{username}}" {% endif %} name="username"/>
+              <input class="input-register" type="text" id="usernamee" autocomplete="off" placeholder="Username" {% if username %} value="{{username}}" {% endif %} name="username"/>
             </div>
-            <div class="form-group" id="pwd">
+            <div class="form-group form-group1" >
               <label for="your_name"><i class="fas fa-lock"></i></label>
-              <input type="password" id="password" autocomplete="off" placeholder="Password" name="password"/>
+              <input class="input-register" type="password" id="password" autocomplete="off" placeholder="Password" name="password"/>
             </div>
 
             <div class="grid-container">
