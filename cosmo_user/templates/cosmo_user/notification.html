@@ -1,11 +1,11 @@
 {% for msg in messages %}
     {% if msg.tags == "1 success"  %}
-        <div class="alert alert-success alert-dismissible" style="bottom:0px;opacity:1;font-size:15px;position:absolute;left:0;right:0;text-align:center;">
+        <div class="alert alert-success alert-dismissible" style="bottom:0px;opacity:1;z-index:1;font-size:15px;position:absolute;left:0;right:0;text-align:center;">
             <a href="#" class="close" style="margin-right:10px" data-dismiss="alert" aria-label="close">&times;</a>
             {{msg}}
         </div>
     {% elif msg.tags == "0 success" %}
-        <div class="alert alert-danger alert-dismissible" style="bottom:0px;opacity:1;font-size:15px;position:absolute;left:0;right:0;text-align:center;">
+        <div class="alert alert-danger alert-dismissible" style="bottom:0px;opacity:1;z-index:1;font-size:15px;position:absolute;left:0;right:0;text-align:center;">
             <a href="#" class="close" style="margin-right:10px" data-dismiss="alert" aria-label="close">&times;</a>
            {{msg}}
         </div>
