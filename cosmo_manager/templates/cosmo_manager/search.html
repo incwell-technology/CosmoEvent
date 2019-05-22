@@ -20,7 +20,7 @@
                 <h4 class="modal-title">Search</h4>
               </div>
               <div class="modal-body">
-                <p>Search contestants by their contestant id or their names.</p>
+                <p>Search Challenger by their Challenger id or their names.</p>
                 <form method="POST" action="/home/search">
                 {% csrf_token %}
                   <input type="text" name="search" class="search-text" />
@@ -43,8 +43,8 @@
           </div>
           <div class="contestant-content">
             <div class="text-item">
-              <p>Contestant No.:</p>
-              <p>Contestant Name</p>
+              <p>Challenger No.:</p>
+              <p>Challenger Name</p>
               <p>Votes left:<span>10</span></p>
             </div>
             <div class="img-item">
