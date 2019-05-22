@@ -14,13 +14,13 @@
           </div>
           <div class="contestant-content">
             <div class="text-item">
-              <p>Contestant No. {{result.contestantNumber}}</p>
+              <p>Challenger No. {{result.contestantNumber}}</p>
               <p>{{result.cosmo_user.user.get_full_name}}</p>
               <p>Votes left:<span>{{voting_left}}</span></p>
             </div>
-            <div class="img-item">
+            {% comment %} <div class="img-item">
               <img src="https://img.youtube.com/vi/{{result.voteVideo_link}}/0.jpg" />
-            </div>
+            </div> {% endcomment %}
           </div>
           {% if messages %}
             {% for msg in messages %}

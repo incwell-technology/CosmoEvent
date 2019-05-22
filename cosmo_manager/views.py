@@ -27,6 +27,10 @@ def verified_user_view(request):
         return HttpResponseRedirect(reverse('user-login'))
 
     context = {}
+    can_participate_now = False
+    if cosmo_manager.can_participate() == "1":
+        can_participate_now = True
+    context.update({'can_participate_now':can_participate_now})
     try:
         cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
         if cosmo_user.verified:
@@ -47,7 +51,7 @@ def verified_user_view(request):
                     context.update({'participate':participate_list})
                 return render(request, "cosmo_manager/verified-view.html", context=context)
             elif participate_status == "2":
-                return render(request, "cosmo_manager/participation-blocked.html")
+                return render(request, "cosmo_manager/participation-blocked.html", context=context)
             elif participate_status == "3":
                 participates = cosmo_manager.get_participates_for_vote()
                 context.update({'participates':participates})
@@ -55,7 +59,7 @@ def verified_user_view(request):
                 context.update({'voting_left':voting_left})
                 return render(request,"cosmo_manager/votingStart.html", context=context)
             elif participate_status == "4":
-                return render(request, "cosmo_manager/votingStop.html")
+                return render(request, "cosmo_manager/votingStop.html", context=context)
         else:
             return render(request, "cosmo_manager/not-verified-view.html")
     except cosmo_models.CosmoUser.DoesNotExist:
@@ -83,6 +87,10 @@ def participate(request):
         return HttpResponseRedirect(reverse('user-login'))
 
     context = {}
+    can_participate_now = False
+    if cosmo_manager.can_participate() == "1":
+        can_participate_now = True
+    context.update({'can_participate_now':can_participate_now})
     can_participates = cosmo_manager.can_participate()
     if can_participates == '1':
         try:
@@ -223,6 +231,12 @@ def resend_code(request):
 def search(request):
     cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
 
+    can_participate_now = False
+    if cosmo_manager.can_participate() == "1":
+        can_participate_now = True
+    context = {}
+    context.update({'can_participate_now':can_participate_now})
+
     if not cosmo_manager.is_verified(cosmo_user):
         messages.success(request, "Please verify your account.", extra_tags="0")
         return HttpResponseRedirect(reverse('not-verified-index'))
@@ -233,7 +247,6 @@ def search(request):
     try:
         search_result = cosmo_models.Participant.objects.filter(tags__title__icontains=request.POST['search'], selected=True).distinct()
         if search_result:
-            context = {}
             context.update({'search_result':search_result})
             context.update({'voting_left':cosmo_user.votingCount})
             return render(request, "cosmo_manager/votingStart.html", context=context)
@@ -251,6 +264,10 @@ def like_video(request, id):
     
     try:
         context = {}
+        can_participate_now = False
+        if cosmo_manager.can_participate() == "1":
+            can_participate_now = True
+        context.update({'can_participate_now':can_participate_now})
         try:
             cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
             if cosmo_user.votingCount <= 0:
@@ -457,13 +474,20 @@ def admin_notSelected(request, id):
             logout(request)
         return HttpResponseRedirect(reverse('admin-login'))   
 
+def admin_graph(request):
+    votes = cosmo_models.Participant.objects.order_by('-vote').filter(selected=True)[:3]
+    return render(request, "cosmo_manager/admin/graph.html", {'votes':votes})
+
 
 def search_participate(request, id):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('user-login'))
 
     context = {}
-
+    can_participate_now = False
+    if cosmo_manager.can_participate() == "1":
+        can_participate_now = True
+    context.update({'can_participate_now':can_participate_now})
     try:
         cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
         voting = cosmo_user.votingCount
