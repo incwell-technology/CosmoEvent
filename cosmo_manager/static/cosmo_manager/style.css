@@ -670,4 +670,5 @@ input {
   background-color: white;
   margin: 0 auto;
   left: 18%;
+  z-index: 0;
 }
