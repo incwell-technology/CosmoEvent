@@ -23,14 +23,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span> 
             </button>
-            <a class="navbar-brand" href="#">Cosmo Acoustic Admin</a>
+            <a class="navbar-brand" href="{% url 'admin' %}">Cosmo Acoustic Admin</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li {% if request.path == "/home/admin" %} class="active" {% endif %}><a href="{% url 'admin' %}">Home</a></li>
-                <li {% if request.path == "/home/admin-users" %} class="active" {% endif %}><a href="{% url 'admin-users' %}">Users</a></li>
-                <li {% if request.path == "/home/admin-participates" %} class="active" {% endif %}><a href="{% url 'admin-participates' %}">Participates</a></li> 
-                <li><a href="#">Graph</a></li> 
+                <li {% if request.path == "/home/admin/admin-users" %} class="active" {% endif %}><a href="{% url 'admin-users' %}">Users</a></li>
+                <li {% if request.path == "/home/admin/admin-participates" %} class="active" {% endif %}><a href="{% url 'admin-participates' %}">Participates</a></li> 
+                <li {% if request.path == "/home/admin/admin-graph" %} class="active" {% endif %}><a href="{% url 'admin-graph' %}">Graph and Top Votes</a></li> 
                 <li><a href="{% url 'logout' %}">Logout</a></li> 
 
             </ul>

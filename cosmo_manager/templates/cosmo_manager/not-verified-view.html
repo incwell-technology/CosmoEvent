@@ -21,11 +21,11 @@
         <link rel="stylesheet" href="{% static 'cosmo_manager/assets/css/w3.css' %}" />
 
     <script type="text/javascript">
-      $(document).ready(function() {
-        $("#proceed")
-          .delay(5000)
-          .show(0);
-      });
+    function showIt2() {
+      document.getElementById("proceed").style.visibility = "visible";
+    }
+    setTimeout("showIt2()", 15000); 
+    
     </script>
       <script>
       function closeNav() {
@@ -100,7 +100,7 @@
                 <button
                   type="button"
                   class="btn"
-                  id="proceed"
+                  id="proceed" style="visibility:hidden;"
                 >
                   Resend Code
                 </button>

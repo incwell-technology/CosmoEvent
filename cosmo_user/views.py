@@ -11,7 +11,7 @@ from cosmo_user.common import register_user
 def user_login(request):
     if request.method == 'GET':
         if not request.user.is_authenticated:
-            return render(request, 'cosmo_user/login.html', {'message': 'Login Credentials', 'title': 'Cosmo Event | Login'})
+            return render(request, 'cosmo_user/login.html', {'message': 'Login To Participate', 'title': 'Cosmo Event | Login'})
         else:
             return HttpResponseRedirect(reverse('user-index'))
 
@@ -67,6 +67,9 @@ def user_register(request):
 
         if request.POST['phone'] == "":
             error.append('Phone number field is required.')
+
+        if cosmo_models.CosmoUser.objects.filter(primaryPhone=request.POST['phone']):
+            error.append('User with this phone number already exists.')
 
         if User.objects.filter(email=request.POST['email']).exists():
             error.append('User with this email id already exists.')

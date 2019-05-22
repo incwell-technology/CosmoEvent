@@ -1,0 +1,17 @@
+{% extends "cosmo_manager/admin/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+            {% for vote in votes %}
+                <div class="col-md-4">
+                    <div class="well index-badge-green">
+                        <h5> <b>{{vote.cosmo_user.user.get_full_name}}</b> </h5>
+                        <h1>Vote: {{vote.vote}}</h1>
+                    </div>
+                </div>
+               
+            {% endfor %}
+    </div>
+</div>
+{% endblock content %}

@@ -62,22 +62,26 @@
           <div class="overlay-content">
             <div class="content-list">
                 <a href="{% url 'verified-user-view' %}">Home</a>
-                 <a href="{% url 'participate' %}">Participate</a>
+                {% if can_participate_now %}
+                   <a href="{% url 'participate' %}">Participate</a>
+                  {% endif %}
                  <a href="{% url 'participate' %}">Terms and Condition</a>
                 <a href="#">
                     <form action="{% url 'user-logout' %}" method="post">
                         {% csrf_token %}
                         <input style="
-    width: 113px;
-    height: 30px;
-    padding: 0px;
-    position: absolute;
-    top: 122%;
-" class="btn btn-round btn-fill" type="submit" value="Log out">
+                          width: 113px;
+                          height: 30px;
+                          padding: 0px;
+                          position: absolute;
+                          top: 122%;
+                      " class="btn btn-round btn-fill" type="submit" value="Log out">
                     </form>
                 </a>
             </div>
+            
           </div>
+           
         </div>
             {% block content %}
 {% comment %} <div class="register-container Participation-container">
@@ -124,16 +128,17 @@
           </form>
         </div> {% endcomment %}
             {% endblock content %}
-        </div>
-      <div class="ad-container">
-        {% comment %} <div class="ad-space" style="background-color:white;float:left;height:100px;width:100px;"> {% endcomment %}
-          {% comment %} <script>
+            <div  class="google-ads">
+         <script>
             (adsbygoogle = window.adsbygoogle || []).push({
                   google_ad_client: "ca-pub-7935777698785033",
                   enable_page_level_ads: true,
             });
-          </script> {% endcomment %}
-        {% comment %} </div> {% endcomment %}
+          </script>
+         </div> 
+        </div>
+      <div class="ad-container">
+       
         <img class="ad-image" src="" alt="Ad" />
       </div>
     </div>

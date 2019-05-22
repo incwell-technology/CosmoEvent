@@ -11,6 +11,7 @@ urlpatterns = [
     path('admin/login',cosmo_manager_views.admin_login, name="admin-login"),
     path('admin', cosmo_manager_views.admin, name="admin"),
     path('admin/admin-users', cosmo_manager_views.admin_users, name="admin-users"),
+    path('admin/admin-graph', cosmo_manager_views.admin_graph, name="admin-graph"),
     path('admin/admin-users-csv', cosmo_manager_views.admin_users_csv, name="admin-users-csv"),
     path('admin/admin-participates', cosmo_manager_views.admin_participates, name="admin-participates"),
     path('admin/admin-participates-csv', cosmo_manager_views.admin_participates_csv, name="admin-participates-csv"),

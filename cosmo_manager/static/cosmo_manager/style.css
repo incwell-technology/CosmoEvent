@@ -1,3 +1,44 @@
+@font-face {
+  font-family: 'Gotham';
+  src: url('fonts/Gotham-Bold.eot'); /* IE9 Compat Modes */
+  src: url('fonts/Gotham-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+     url('fonts/Gotham-Bold.woff') format('woff'), /* Modern Browsers */
+     url('fonts/Gotham-Bold.ttf')  format('truetype'), /* Safari, Android, iOS */
+     url('fonts/Gotham-Bold.svg#svgFontName') format('svg'); /* Legacy iOS */
+   font-weight: 700;
+   font-style: normal;
+ }
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('fonts/Gotham-Medium.eot'); /* IE9 Compat Modes */
+  src: url('fonts/Gotham-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+     url('fonts/Gotham-Medium.woff') format('woff'), /* Modern Browsers */
+     url('fonts/Gotham-Medium.ttf')  format('truetype'), /* Safari, Android, iOS */
+     url('fonts/Gotham-Medium.svg#svgFontName') format('svg'); /* Legacy iOS */
+   font-weight: 400;
+   font-style: normal;
+ }
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('fonts/Gotham-Thin.eot'); /* IE9 Compat Modes */
+  src: url('fonts/Gotham-Thin.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+     url('fonts/Gotham-Thin.woff') format('woff'), /* Modern Browsers */
+     url('fonts/Gotham-Thin.ttf')  format('truetype'), /* Safari, Android, iOS */
+     url('fonts/Gotham-Thin.svg#svgFontName') format('svg'); /* Legacy iOS */
+   font-weight: 300;
+   font-style: normal;
+ }
+*{
+  font-family: 'Gotham';
+  font-weight: bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Gotham';
+  font-weight: bold;
+}
 .container {
   width: 100%;
 }
@@ -10,9 +51,11 @@
 .ad-container {
 }
 body {
-  background-image: url("./images/theme.svg");
+  background-image: url("./images/theme.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  
+  color:white;
 }
 .main-container {
   width: 100%;
@@ -42,7 +85,7 @@ body {
   font-size: 22px;
   font-weight: bold;
   text-align: center;
-  color: #15103e;
+  color:#ffffff;
 }
 .login-container {
   padding-top: 25px;
@@ -51,20 +94,20 @@ input {
   width: 100%;
   display: block;
   border: none;
-  border-bottom: 1px solid #15103e;
+  border-bottom: 1px solid #e6b32b;
   padding: 6px 35px;
-  font-family: Poppins;
+  
   margin-top: -15px !important;
   background-color: transparent;
   outline: transparent;
 }
 .p-text {
-  color: #15103e;
+  color: #e6b32b;
 }
 form {
   width: 85%;
   margin: 0 auto;
-  color: #15103e;
+  color: #e6b32b;
 }
 #pwd {
   margin-top: 25px;
@@ -114,6 +157,7 @@ label {
   border-color: none;
   border-radius: 35px;
   text-align: center;
+  font-weight: bold;
   font-size: 18px !important;
   color: #15103e;
   padding: 5px 15px;
@@ -137,7 +181,8 @@ label {
   font-size: 25px;
 }
 ::placeholder {
-  color: #15103e;
+  color: #ffffff;
+  
 }
 .signup-container {
   text-align: center;
@@ -160,7 +205,7 @@ label {
   bottom: 0;
 }
 .register-title {
-  color: rgb(22, 22, 63);
+  color: #ffffff;
   padding-top: 40px;
 }
 .register-container {
@@ -294,7 +339,7 @@ input[type="file"]::-webkit-file-upload-button {
 .home-logo {
   overflow: hidden;
   height: 250px;
-  background-image: url("./images/theme.svg");
+  background-image: url("./images/theme.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -578,6 +623,7 @@ input {
     border-color: none;
     border-radius: 35px;
     text-align: center;
+    font-weight: bold;
     font-size: 18px !important;
     color: #15103e;
     padding: 15px;
@@ -616,3 +662,12 @@ input {
 }
 
 
+.google-ads{
+  position: absolute;
+  height: 46px;
+  width: 65%;
+  bottom: 0;
+  background-color: white;
+  margin: 0 auto;
+  left: 18%;
+}
