@@ -65,7 +65,6 @@
                 {% if can_participate_now %}
                    <a href="{% url 'participate' %}">Participate</a>
                   {% endif %}
-                 <a href="{% url 'participate' %}">Terms and Condition</a>
                 <a href="#">
                     <form action="{% url 'user-logout' %}" method="post">
                         {% csrf_token %}
