@@ -662,3 +662,12 @@ input {
 }
 
 
+.google-ads{
+  position: absolute;
+  height: 46px;
+  width: 65%;
+  bottom: 0;
+  background-color: white;
+  margin: 0 auto;
+  left: 18%;
+}
