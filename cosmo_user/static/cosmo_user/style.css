@@ -35,11 +35,13 @@
 }
 .body-container {
   width: 100%;
-  display: grid;
+  display: block;
   grid-template-columns: 10% 70% 10%;
   grid-column-gap: 5%;
 }
 .ad-container {
+  visibility: hidden;
+
 }
 body {
   background-image: url("./images/theme.jpg");
