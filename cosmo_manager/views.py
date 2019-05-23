@@ -477,9 +477,15 @@ def admin_notSelected(request, id):
 def admin_graph(request):
     votes = cosmo_models.Participant.objects.order_by('-vote').filter(selected=True)[:3]
     participates = cosmo_models.Participant.objects.filter(selected=True)
+    participate_list = []    
+    for participate in participates:
+        participate_list.append({
+            'full_name': participate.cosmo_user.user.get_full_name(),
+            'vote': participate.vote
+        })
     context = {}
     context.update({'votes':votes})
-    context.update({'participates':participates})
+    context.update({'participates':participate_list})
     return render(request, "cosmo_manager/admin/graph.html", context=context)
 
 
