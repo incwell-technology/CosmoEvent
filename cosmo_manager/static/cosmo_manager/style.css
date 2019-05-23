@@ -49,6 +49,7 @@ h1, h2, h3, h4, h5, h6 {
   grid-column-gap: 5%;
 }
 .ad-container {
+  visibility: hidden;
 }
 body {
   background-image: url("./images/theme.jpg");
