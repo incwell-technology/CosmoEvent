@@ -15,11 +15,7 @@
             {% endfor %}
     </div>
     <div class="row">
-        <div class="col-md-1">
-
-        </div>
-
-        <div class="col-md-10">
+        <div class="col-md-12">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -45,7 +41,14 @@ $.getJSON(
                     'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
             },
             xAxis: {
-                type: 'integer'
+                categories:  [
+                    {% for d in participates %}
+                       '{{d.full_name}}' {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                ],
+               title: {
+                    text: 'Participates'
+                }
             },
             yAxis: {
                 title: {
@@ -89,7 +92,7 @@ $.getJSON(
                     {
                         name: '{{d.full_name}}',
                         y:{{d.vote}}
-                    },
+                    },  
                     {% endfor %}
                 ]
             }]
@@ -98,10 +101,6 @@ $.getJSON(
 );
 </script>
         </div>
-        <div class="col-md-1">
-
-        </div>
     </div>
 </div>
-{{participates}}
 {% endblock content %}
