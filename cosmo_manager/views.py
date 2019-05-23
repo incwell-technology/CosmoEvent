@@ -475,8 +475,8 @@ def admin_notSelected(request, id):
         return HttpResponseRedirect(reverse('admin-login'))   
 
 def admin_graph(request):
-    votes = cosmo_models.Participant.objects.order_by('-vote').filter(selected=True)[:3]
-    participates = cosmo_models.Participant.objects.order_by('-id').filter(selected=True)
+    votes = cosmo_models.Participant.objects.order_by('-vote').filter(selected=True)[:2]
+    participates = cosmo_models.Participant.objects.order_by('-vote').filter(selected=True)
     participate_list = []    
     for participate in participates:
         participate_list.append({
