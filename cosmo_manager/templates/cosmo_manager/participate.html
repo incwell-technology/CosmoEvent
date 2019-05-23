@@ -1,0 +1,78 @@
+{% extends "cosmo_manager/base.html" %}
+
+{% block content %}
+{% if error %}
+    {% for err in error %}
+        {{err}}
+    {% endfor %}
+{% endif %}
+
+<div class="container Participation-container">
+<form method="POST" class="center-aligner" enctype="multipart/form-data"> 
+{% csrf_token %}
+
+        <div class="form-group" id="y-link">
+            <label for="your_name"
+            ><i class="fas fa-file-signature"></i></label>
+            <input type="text"  placeholder="Youtube Link" autocomplete="off" name="youtube_link" required/>
+           
+        </div>
+        <div class="form-group">
+              <label for="your_name"><i class="fas fa-phone-volume"></i></label>
+              <input type="number" placeholder="Secondary Phone" autocomplete="off" id="s-phone" required name="secondary_phone"/>
+             
+            </div>
+    
+   <div class="grid-container">
+        <div class="checkbox grid-item-first">
+        <input type="checkbox" id="box" value="0" />
+        </div>
+        <div class="grid-item"><p>I Agree, <a  data-toggle="modal"
+            data-target="#myModal" style="text-decoration:none; color:white;cursor:pointer;">Terms and Condition</a></p></div>
+  
+   <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                  &times;
+                </button>
+                <h4 class="modal-title" style="color:black;">Terms and Conditions</h4>
+              </div>
+              <div class="modal-body">
+                <p style="text-align:justify;">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor, nibh non dignissim pharetra, velit nunc tincidunt sem, consectetur egestas nisi metus ut nunc. In condimentum, eros eu ultrices volutpat, est nulla cursus leo, id fringilla lectus est quis purus. Donec fermentum sit amet enim sed suscipit. Phasellus malesuada massa mi, eget euismod turpis ultrices vitae. Integer lobortis odio et nunc tempus bibendum. In interdum augue turpis, id vulputate arcu ullamcorper sit amet. Morbi at nisi in velit consequat aliquet quis ornare erat. Sed consectetur accumsan quam, ac tincidunt ex euismod eu. Nulla eu rhoncus turpis. Vestibulum cursus lorem a dui laoreet, vel euismod ante elementum. Vestibulum elementum purus eros, at pellentesque est elementum vitae. Praesent rhoncus a lectus eget tincidunt. Aliquam vestibulum placerat sem, non vulputate ante mattis in. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Duis consectetur elit eget augue pulvinar luctus nec quis nisi. Sed eget sem augue. Pellentesque sagittis ex et eros consequat vehicula. Duis vel nibh et lacus vestibulum efficitur eget quis odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non lorem nec sem pellentesque rutrum a vitae nisl. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse suscipit nec est ut euismod. Nulla facilisi. Ut nec leo ipsum. Nullam in leo nec elit ultricies dignissim at vel dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ullamcorper at ex aliquet molestie. Etiam in felis et orci ultrices tempus vel ac libero.
+
+Phasellus porta sodales odio, in ultricies ex ultricies ut. Ut et sapien hendrerit, pulvinar lectus quis, posuere nunc. Aenean scelerisque, justo id vestibulum pulvinar, risus dolor pretium nisi, at sagittis libero ligula finibus metus. Cras id placerat neque. Duis condimentum molestie commodo. Duis eget imperdiet massa. Sed dignissim est nulla, at suscipit tellus feugiat ut. Etiam eu turpis ut eros congue accumsan at non lacus. Nulla consectetur pretium lorem volutpat porttitor. Sed eleifend et sem et dapibus. Phasellus fringilla metus orci, non egestas urna molestie id. Pellentesque dictum luctus neque in lacinia. Phasellus dui arcu, feugiat sed libero sit amet, tincidunt cursus nibh. Donec facilisis orci metus, quis sodales est dapibus nec.
+
+Etiam vitae erat risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra aliquam fermentum. Aliquam sit amet auctor lectus. Ut rhoncus ullamcorper scelerisque. Nullam elementum mi id efficitur interdum. Fusce ut consequat dolor, vitae tincidunt lorem. In hac habitasse platea dictumst. Cras condimentum sodales ante quis tempor. Nullam lacinia luctus sem ac iaculis. Vivamus accumsan, mauris eget pellentesque pellentesque, ex purus lobortis tellus, eu tincidunt purus lacus vel leo. Nullam hendrerit dolor ut dolor vehicula, vel aliquam leo gravida. Mauris rhoncus, sapien sed pretium aliquam, nulla diam finibus orci, non molestie eros quam id elit. Praesent aliquam fringilla purus, a tempus mauris.
+
+Duis venenatis at ante sit amet blandit. Praesent in nisl faucibus, placerat eros non, scelerisque ante. Mauris erat lectus, mattis a condimentum quis, semper id urna. Sed a malesuada augue. Phasellus ut mi mi. Aenean id est enim. Mauris at lectus mattis, elementum lectus eget, pretium lorem. Integer tincidunt erat et elit aliquet, vel consectetur neque commodo. Nullam ut pretium dui. Cras ultrices tempor tincidunt. Aliquam ut ultricies augue. Nam tempor urna ac facilisis sodales. Curabitur bibendum, dolor quis imperdiet tempus, velit sem egestas justo, vitae volutpat nisl ex non erat. Sed molestie fringilla accumsan. Proin aliquam, mauris id vehicula pellentesque, est risus dignissim risus, molestie semper arcu odio id metus.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="form-group" id="register-button">
+        <button type="submit" id="check" class="btn" disabled>
+        Submit
+        </button>
+    </div>
+         
+        </div>
+        <script>
+      var checkbox = document.getElementById("box");
+      checkbox.addEventListener("change", function(e) {
+        e.preventDefault();
+        if (this.checked) {
+          document.getElementById("check").disabled = false;
+        } else {
+          document.getElementById("check").disabled = true;
+        }
+      });
+    </script>
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends "cosmo_manager/base.html" %}
+{% load static %}
+{% block content %}
+ <div id="text-area">
+    <h3 class="welcome-text">Welcome, {{ request.user.get_full_name | title }}</h3>
+    <div class="form-group" id="register-button">
+        <div style="background-color:#e6b32b;width:80%;margin:0 auto;padding:2px; color:white;">
+                    <h4>Voting time has finished. Thank You.</h4>
+        </div>
+    </div>
+</div>
+<div class="home-page">
+    <img src="{% static 'cosmo_manager/images/logo.png' %}" class="home-page-logo"/>
+</div>
+
+{% if messages %}
+    {% include "cosmo_user/notification.html" %}
+{% endif %}
+{% endblock content %}

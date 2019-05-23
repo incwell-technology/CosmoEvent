@@ -1,0 +1,60 @@
+{% extends "cosmo_manager/base.html" %}
+
+{% block content %}
+<div class="vote-container">
+          <div class="frame-content">
+            <iframe
+              width="90%"
+              height="250"
+              src="https://www.youtube.com/embed/{{result.voteVideo_link}}?autoplay=1"
+              allow="autoplay"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+          <div class="contestant-content">
+            <div class="text-item">
+              <p>Challenger Code. {{result.contestantNumber}}</p>
+              <p>{{result.cosmo_user.user.get_full_name}}</p>
+              <p>Votes left:<span>{{voting_left}}</span></p>
+            </div>
+            {% comment %} <div class="img-item">
+              <img src="https://img.youtube.com/vi/{{result.voteVideo_link}}/0.jpg" />
+            </div> {% endcomment %}
+          </div>
+          {% if messages %}
+            {% for msg in messages %}
+              <h4 class="text-center" style="color:white;">{{msg}}</h4>
+            {% endfor %}
+          {% endif %}
+          {% if voting > 0 %}
+            <form action="/home/like-video/{{id}}" class="vote-form" method="POST">
+            {% csrf_token %}
+              <div class="center-vote">
+                <button type="submit" class="btn">Vote Now</button>
+              </div>
+            </form>
+          {% else %}
+            <h3 class="text-center">Your vote limit exceed. Thank You.</h3>
+          {% endif %}
+          <div class="contestant-list">
+            <h4>You may also like</h4>
+            <div class="list-content">
+              {% for data in others %}
+                  <a href="/home/search-participate/{{data.id}}">
+                    <div class="list-item">
+                        <div class="contestant-image-container">
+                        <span class="helper"></span>
+                        <img src="https://img.youtube.com/vi/{{data.voteVideo_link}}/0.jpg" class="contestant-image" />
+                        </div>
+                        <div class="contestant-description">
+                        <div>{{data.contestantNumber}}</div>
+                        <div>{{data.cosmo_user.user.get_full_name}}</div>
+                        </div>
+                    </div>
+                  </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+{% endblock content %}

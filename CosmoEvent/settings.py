@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import yaml
 
+credentials = yaml.load(open('credentials.yaml'), Loader=yaml.FullLoader)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,23 +22,26 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = credentials['app_secret']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'cosmo_user',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cosmo_manager',
+    'sponsor'
 ]
 
 MIDDLEWARE = [
@@ -54,7 +59,7 @@ ROOT_URLCONF = 'CosmoEvent.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +72,7 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATE_DIRS = ('cosmo_user/templates/', 'cosmo_user/templates/registration/')
 WSGI_APPLICATION = 'CosmoEvent.wsgi.application'
 
 
@@ -105,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Katmandu'
 
 USE_I18N = True
 
@@ -118,3 +124,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = credentials['cosmo_admin_email']
+EMAIL_HOST_PASSWORD = credentials['cosmo_admin_password']
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = credentials['cosmo_admin_email']
+
+LOGIN_REDIRECT_URL = 'admin'
+LOGOUT_REDIRECT_URL = '/home/admin'

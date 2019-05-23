@@ -1,0 +1,119 @@
+<html>
+{% load static %}
+  <head>
+    <title>
+      Cosmo Acoustic Challenge
+    </title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="{% static 'cosmo_user/assets/css/bootstrap.min.css' %}"/>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'cosmo_manager/style.css' %}" />
+    <script src="{% static 'cosmo_user/assets/js/jquery.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'cosmo_manager/assets/css/w3.css' %}" />
+
+    <script type="text/javascript">
+    function showIt2() {
+      document.getElementById("proceed").style.visibility = "visible";
+    }
+    setTimeout("showIt2()", 15000); 
+    
+    </script>
+      <script>
+      function closeNav() {
+        document.getElementById("alert-text").style.display = "none";
+      }
+    </script>
+  </head>
+  <body>
+    <div class="body-container">
+      <div class="ad-container">
+        <img class="ad-image" src="" alt="Ad" />
+      </div>
+      <div class="main-container">
+        <div class="password-container">
+          <div class="code-title">
+            <p class="title">
+              Verification code
+            </p>
+
+            <p class="instruction">
+              You have been successfully registered. Please check your Email to
+              verify.
+            </p>
+            {% if messages %}
+                {% for msg in messages %}
+                        {% if msg.tags == "2 success" %}
+                             <div id="alert-text" class="w3-panel w3-red">
+                            <p>{{msg}}</p>
+                            <p class="panel-box" onclick="closeNav()">&times;</p>
+                        </div>
+                        {% endif %}
+                        {% if msg.tags == "0 success" %}
+                         <div id="alert-text" class="w3-panel w3-red">
+                            <p>{{msg}}</p>
+                            <p class="panel-box" onclick="closeNav()">&times;</p>
+                        </div>
+                        {% endif %}
+                        {% if msg.tags == "1 success" %}
+                              <div id="alert-text" class="w3-panel w3-green">
+                            <p>{{msg}}</p>
+                            <p class="panel-box" onclick="closeNav()">&times;</p>
+                        </div>
+                        {% endif %}
+                {% endfor %}
+            {% endif %}
+            <div class="verify-container">
+                <form action="{% url 'verify-user' %}" class="center-aligner" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="your_name"><i class="fas fa-user-check"></i></label>
+                        <input
+                        type="text"
+                        name="code"
+                        id="verify-mail"
+                        placeholder="Verification code"
+                        required
+                        />
+                    </div>
+                    <div class="form-group" id="verify-btn">
+                        <a href="index.html"
+                        ><button type="submit" class="btn">Verify</button></a
+                        >
+                        
+                    </div>
+                </form>
+                <form action="{% url 'user-logout' %}" class="center-aligner" method="post">
+                    {% csrf_token %}
+                    <input class="btn btn-round btn-fill" class="btn" style="width: 40%;padding: 0px;background-color: #dc3131;position: relative;color: antiquewhite;top: 0%;left: 27%;bottom: -13px;text-align: center;" type="submit" value="Log out">
+                </form>
+              <div class="resend-container">
+              <a href="{% url 'resend-code' %}">
+                <button
+                  type="button"
+                  class="btn"
+                  id="proceed" style="visibility:hidden;"
+                >
+                  Resend Code
+                </button>
+                </a>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ad-container">
+        <img class="ad-image" src="" alt="Ad" />
+      </div>
+    </div>
+  </body>
+</html>

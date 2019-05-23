@@ -1,0 +1,40 @@
+<html>
+{% load static %}
+  <head>
+    <title>
+      Cosmo Acoustic Challenge
+    </title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="{% static 'cosmo_user/assets/css/bootstrap.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    
+    <script src="{% static 'cosmo_user/assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'cosmo_user/assets/js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'cosmo_user/style.css' %}" />
+  </head>
+  <body>
+    <div class="body-container">
+      <div class="ad-container">
+        <img class="ad-image" src="" alt="Ad" />
+      </div>
+      <div class="main-container">
+      {% block content %}
+      
+      {% endblock content %}
+      </div>
+      <div class="ad-container">
+        <img class="ad-image" src="" alt="Ad" />
+      </div>
+    </div>
+  </body>
+</html>

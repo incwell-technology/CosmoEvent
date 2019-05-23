@@ -1,0 +1,92 @@
+{% extends "cosmo_manager/base.html" %}
+{% block search %}
+             <i
+            class="fa fa-search"
+            id="open-search-btn"
+            data-toggle="modal"
+            data-target="#myModal"
+          ></i>
+          {% endblock search %}
+{% block content %}
+<div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                  &times;
+                </button>
+                <h4 class="modal-title">Search</h4>
+              </div>
+              <div class="modal-body">
+                <p>Search Challenger by their Challenger id or their names.</p>
+                <form method="POST" action="/home/search">
+                {% csrf_token %}
+                  <input type="text" name="search" class="search-text" />
+                  <button class="searcher"><i class="fa fa-search"></i></button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vote-container">
+          <div class="contestant-list">
+            <h3 class="main-text-vote">
+              Welcome To Cosmo Acoustic Challenge 2.0 {{can_participate_now}}
+              {% if messages %}
+                  {% include 'cosmo_user/notification.html' %}
+              {% endif %}
+            </h3>
+            <div class="main-text-vote">
+              You have <span>{{voting_left}}</span> votes left
+            </div>
+            <div class="main-text-vote">
+              Vote for your favourite Challenger below:
+            </div>
+            <div class="list-content">
+              
+              {% if search_result %}
+                {% for data in search_result %}
+                  <a href="/home/search-participate/{{data.id}}">
+                    <div class="list-item">
+                      <div class="contestant-image-container">
+                        <span class="helper"></span>
+                        <img
+                          src="https://img.youtube.com/vi/{{data.voteVideo_link}}/0.jpg"
+                          class="contestant-image"
+                        />
+                      </div>
+
+                      <div class="contestant-description">
+                        <div>{{data.contestantNumber}}</div>
+                        <div>{{data.cosmo_user.user.get_full_name}}</div>
+                      </div>
+                    </div>
+                  </a>
+                {% endfor %}
+              {% else %}
+                {% for data in participates %}
+                  <a href="/home/search-participate/{{data.id}}">
+                    <div class="list-item">
+                      <div class="contestant-image-container">
+                        <span class="helper"></span>
+                        <img
+                          src="https://img.youtube.com/vi/{{data.videoLink}}/0.jpg"
+                          class="contestant-image"
+                        />
+                      </div>
+
+                      <div class="contestant-description">
+                        <div>{{data.contestantNumber}}</div>
+                        <div>{{data.fullName}}</div>
+                      </div>
+                    </div>
+                  </a>
+                {% endfor %}
+
+              {% endif %}
+            </div>
+          </div>
+        </div>
+{% endblock content %}
