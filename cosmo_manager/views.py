@@ -122,7 +122,7 @@ def participate(request):
                             else:
                                 try:
                                     cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
-                                    contestantNumber = 'CAC'+str(random.sample(range(1, 5), 1)[0])+str(random.sample(range(5, 10), 1)[0])+str(request.user.id)                                     
+                                    contestantNumber = 'CAC2'+str(request.user.id)                                     
                                     
                                     if not cosmo_models.Tags.objects.filter(title=request.user.first_name):
                                         tags = cosmo_models.Tags.objects.create(title=request.user.first_name)
@@ -476,7 +476,11 @@ def admin_notSelected(request, id):
 
 def admin_graph(request):
     votes = cosmo_models.Participant.objects.order_by('-vote').filter(selected=True)[:3]
-    return render(request, "cosmo_manager/admin/graph.html", {'votes':votes})
+    participates = cosmo_models.Participant.objects.filter(selected=True)
+    context = {}
+    context.update({'votes':votes})
+    context.update({'participates':participates})
+    return render(request, "cosmo_manager/admin/graph.html", context=context)
 
 
 def search_participate(request, id):
