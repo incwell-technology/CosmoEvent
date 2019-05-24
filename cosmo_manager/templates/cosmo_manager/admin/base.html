@@ -34,7 +34,7 @@
             <ul class="nav navbar-nav">
                 <li {% if request.path == "/home/admin" %} class="active" {% endif %}><a href="{% url 'admin' %}">Home</a></li>
                 <li {% if request.path == "/home/admin/admin-users" %} class="active" {% endif %}><a href="{% url 'admin-users' %}">Users</a></li>
-                <li {% if request.path == "/home/admin/admin-participates" %} class="active" {% endif %}><a href="{% url 'admin-participates' %}">Participates</a></li> 
+                <li {% if request.path == "/home/admin/admin-participates" %} class="active" {% endif %}><a href="{% url 'admin-participates' %}">Participants</a></li> 
                 <li {% if request.path == "/home/admin/admin-graph" %} class="active" {% endif %}><a href="{% url 'admin-graph' %}">Graph and Top Votes</a></li> 
                 <li><a href="{% url 'logout' %}">Logout</a></li> 
 

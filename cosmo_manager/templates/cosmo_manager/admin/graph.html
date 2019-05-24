@@ -37,8 +37,7 @@ $.getJSON(
                 text: 'Votes'
             },
             subtitle: {
-                text: document.ontouchstart === undefined ?
-                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                
             },
             xAxis: {
                 categories:  [
@@ -47,7 +46,7 @@ $.getJSON(
                     {% endfor %}
                 ],
                title: {
-                    text: 'Participates'
+                    text: 'Participants'
                 }
             },
             yAxis: {
