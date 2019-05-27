@@ -628,7 +628,7 @@ input {
     font-size: 18px !important;
     color: #15103e;
     padding: 15px;
-    width: 140px;
+    min-width: 140px;
     margin-bottom: 20px;
   }
   .vote-form {
@@ -672,4 +672,16 @@ input {
   margin: 0 auto;
   left: 18%;
   z-index: 0;
+}
+
+a:hover{
+  color:#e6b32b;
+}
+a:focus{
+  color:#e6b32b;
+}
+
+.modal-content
+{
+  color: #15103e;
 }
