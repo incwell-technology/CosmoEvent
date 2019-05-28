@@ -210,7 +210,7 @@ def resend_code(request):
                         Cosmo Acoustic Challenge.<br/>
                         Arun Thapa Chowk, Jhamsikhel,<br/>
                         Nepal.<br/>
-                        5555987, 6584658<br/>
+                        9841360559
                         """
                 }
                 if resend_verification_email(update_details, cosmo_user, verification_code):
