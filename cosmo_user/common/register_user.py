@@ -29,7 +29,7 @@ def register_django_user(request):
                 Cosmo Acoustic Challenge.<br/>
                 Arun Thapa Chowk, Jhamsikhel,<br/>
                 Nepal.<br/>
-                5555987, 6584658
+                9841360559
                 """
         }
         if send_verification_email(update_details, user):
