@@ -685,3 +685,8 @@ a:focus{
 {
   color: #15103e;
 }
+
+.list_terms
+{
+  text-align: left;
+}
