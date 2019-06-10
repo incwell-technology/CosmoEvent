@@ -151,5 +151,5 @@ def verification(request):
         return HttpResponseRedirect(reverse('not-verified-index'))
 
 
-
-    
+def terms(request):
+    return render(request, "cosmo_user/terms.html")
