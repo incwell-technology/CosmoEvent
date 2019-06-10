@@ -12,4 +12,5 @@ urlpatterns = [
     path('verification', users_views.verification, name="verify-user"),
     path('home/', include(cosmo_manager_urls)),
     path('', users_views.index, name='user-index'),
+    path('terms-and-conditions', users_views.terms, name="terms")
 ]
