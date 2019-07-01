@@ -18,6 +18,8 @@ urlpatterns = [
     path('admin/admin-selected/<int:id>', cosmo_manager_views.admin_selected, name="admin-selected"),
     path('admin/admin-notSelected/<int:id>', cosmo_manager_views.admin_notSelected, name="admin-notSelected"),
     path('search-participate/<int:id>', cosmo_manager_views.search_participate, name="search-participate"),
-    path('privacy-policy', cosmo_manager_views.policy, name="policy")
+    path('stop-participate/<int:id>', cosmo_manager_views.stop_search_participate, name="stop-search-participate"),
+    path('privacy-policy', cosmo_manager_views.policy, name="policy"),
+    path('search-video', cosmo_manager_views.search_video, name="search-video")
 ]
 

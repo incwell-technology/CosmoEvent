@@ -90,3 +90,4 @@ def get_participates_for_vote():
             })
 
     return participate_list
+    
