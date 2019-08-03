@@ -37,7 +37,6 @@
             </div>
             <div class="list-content">
               {% for data in votes %}
-                <a href="/home/voting-stop/{{data.id}}">
                     <div class="list-item">
                         <div class="contestant-image-container">
                         <span class="helper"></span>
@@ -49,8 +48,8 @@
                         <div>Vote: {{data.vote}}</div>
                         </div>
                     </div>
-                  </a>
               {% endfor %}
+              
             </div>
           </div>
         </div>
