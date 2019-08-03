@@ -1,0 +1,36 @@
+{% extends "cosmo_manager/base.html" %}
+
+{% block content %}
+<div class="vote-container">
+          <div class="frame-content">
+            <iframe
+              width="90%"
+              height="250"
+              src="https://www.youtube.com/embed/{{result.voteVideo_link}}?autoplay=1"
+              allow="autoplay"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+          <div class="contestant-content">
+            <div class="text-item">
+              <p>Challenger Code. {{result.contestantNumber}}</p>
+              <p>{{result.cosmo_user.user.get_full_name}}</p>
+              <p>Vote: {{result.vote}}</p>
+            </div>
+            {% comment %} <div class="img-item">
+              <img src="https://img.youtube.com/vi/{{result.voteVideo_link}}/0.jpg" />
+            </div> {% endcomment %}
+          </div>
+          {% if messages %}
+            {% for msg in messages %}
+              <h4 class="text-center" style="color:white;">{{msg}}</h4>
+            {% endfor %}
+          {% endif %}
+          
+          <div class="contestant-list" style="text-align: center;">
+              <a class="btn btn-success text-center"  href="/">Go to HOME</a>
+            
+          </div>
+        </div>
+{% endblock content %}
