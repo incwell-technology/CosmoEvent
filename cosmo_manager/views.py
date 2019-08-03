@@ -62,6 +62,10 @@ def verified_user_view(request):
             elif participate_status == "4":
                 participates = cosmo_manager.get_participates_for_vote()
                 context.update({'participates':participates})
+                top_votes = cosmo_models.Participant.objects.order_by("-vote").all()[:2]
+                context.update({'votes':top_votes})
+
+                print(top_votes)
                 return render(request, "cosmo_manager/votingStop.html", context=context)
         else:
             return render(request, "cosmo_manager/not-verified-view.html")
@@ -625,3 +629,44 @@ def search_video(request):
     except cosmo_models.Participant.DoesNotExist:
         messages.success(request, "Sorry. No result found. Please try again.", extra_tags="0")
         return HttpResponseRedirect(reverse('verified-user-view'))
+
+
+def voting_stop(request, id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('user-login'))
+
+    context = {}
+    can_participate_now = False
+    if cosmo_manager.can_participate() == "1":
+        can_participate_now = True
+    able_to_vote = False
+    context.update({'can_participate_now':can_participate_now})
+    try:
+        cosmo_user = cosmo_models.CosmoUser.objects.get(user=request.user)
+        voting = cosmo_user.votingCount
+
+        if not cosmo_manager.is_verified(cosmo_user):
+            return HttpResponseRedirect(reverse('not-verified-index'))
+        try:
+            participate_instance = cosmo_models.Participant.objects.get(id=id)
+            if not participate_instance.selected:
+                messages.success(request, "Sorry. This participate is not selected.", extra_tags="0")
+                return HttpResponseRedirect(reverse('verified-user-view'))
+            context.update({'result':participate_instance})
+            context.update({'id':id})
+            context.update({'voting_left':cosmo_user.votingCount})
+           
+            context.update({'voting':voting})
+            return render(request, "cosmo_manager/searchResult3.html", context = context)
+        except cosmo_models.Participant.DoesNotExist:
+            messages.success(request, "No participate found. Please try again.", extra_tags='0')
+            if not cosmo_manager.is_verified(cosmo_user):
+                return HttpResponseRedirect(reverse('not-verified-index'))
+            else:
+                return HttpResponseRedirect(reverse('verified-user-view'))
+    except cosmo_models.CosmoUser.DoesNotExist:
+        messages.success(request, "No participate found. Please try again.", extra_tags='0')
+        if not cosmo_manager.is_verified(cosmo_user):
+            return HttpResponseRedirect(reverse('not-verified-index'))
+        else:
+            return HttpResponseRedirect(reverse('verified-user-view'))

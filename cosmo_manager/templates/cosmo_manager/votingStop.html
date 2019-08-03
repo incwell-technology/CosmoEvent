@@ -1,12 +1,4 @@
 {% extends "cosmo_manager/base.html" %}
-{% block search %}
-             <i
-            class="fa fa-search"
-            id="open-search-btn"
-            data-toggle="modal"
-            data-target="#myModal"
-          ></i>
-          {% endblock search %}
 {% block content %}
 <div id="myModal" class="modal fade" role="dialog">
           <div class="modal-dialog">
@@ -39,52 +31,26 @@
               {% endif %}
             </h3>
             <div class="main-text-vote">
-            <p>Voting time has been finished.</p>
+            <h3>Top 2 Participants</h3>
             </div>
             <div class="main-text-vote">
             </div>
             <div class="list-content">
-              
-              {% if search_result %}
-                {% for data in search_result %}
-                  <a href="/home/stop-participate/{{data.id}}">
+              {% for data in votes %}
+                <a href="/home/voting-stop/{{data.id}}">
                     <div class="list-item">
-                      <div class="contestant-image-container">
+                        <div class="contestant-image-container">
                         <span class="helper"></span>
-                        <img
-                          src="https://img.youtube.com/vi/{{data.voteVideo_link}}/0.jpg"
-                          class="contestant-image"
-                        />
-                      </div>
-
-                      <div class="contestant-description">
+                        <img src="https://img.youtube.com/vi/{{data.voteVideo_link}}/0.jpg" class="contestant-image" />
+                        </div>
+                        <div class="contestant-description">
                         <div>{{data.contestantNumber}}</div>
                         <div>{{data.cosmo_user.user.get_full_name}}</div>
-                      </div>
+                        <div>Vote: {{data.vote}}</div>
+                        </div>
                     </div>
                   </a>
-                {% endfor %}
-              {% else %}
-                {% for data in participates %}
-                  <a href="/home/stop-participate/{{data.id}}">
-                    <div class="list-item">
-                      <div class="contestant-image-container">
-                        <span class="helper"></span>
-                        <img
-                          src="https://img.youtube.com/vi/{{data.videoLink}}/0.jpg"
-                          class="contestant-image"
-                        />
-                      </div>
-
-                      <div class="contestant-description">
-                        <div>{{data.contestantNumber}}</div>
-                        <div>{{data.fullName}}</div>
-                      </div>
-                    </div>
-                  </a>
-                {% endfor %}
-
-              {% endif %}
+              {% endfor %}
             </div>
           </div>
         </div>
