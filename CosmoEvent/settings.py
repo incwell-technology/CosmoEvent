@@ -13,10 +13,13 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 import yaml
 
+
 credentials = yaml.load(open('credentials.yaml'), Loader=yaml.FullLoader)
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+credentials = yaml.load(open('credentials.yaml'), Loader=yaml.FullLoader)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -130,7 +133,11 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = credentials['cosmo_admin_email']
 EMAIL_HOST_PASSWORD = credentials['cosmo_admin_password']
 EMAIL_USE_TLS = True
+<<<<<<< Updated upstream
 DEFAULT_FROM_EMAIL = credentials['cosmo_admin_email']
 
 LOGIN_REDIRECT_URL = 'admin'
 LOGOUT_REDIRECT_URL = '/home/admin'
+=======
+DEFAULT_FROM_EMAIL = ''
+>>>>>>> Stashed changes
