@@ -6,6 +6,6 @@ jsonfield==2.0.2
 mysqlclient==1.4.2.post1
 pycodestyle==2.5.0
 pytz==2018.7
-PyYAML==5.1
+PyYAML==5.4
 Pillow==6.0.0   
 reportlab==3.5.20
