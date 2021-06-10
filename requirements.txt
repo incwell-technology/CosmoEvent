@@ -1,5 +1,5 @@
 autopep8==1.4.3
-Django==2.2.1
+Django==2.2.24
 django-cors-headers==2.4.0
 django-phonenumber-field==2.2.0
 jsonfield==2.0.2
