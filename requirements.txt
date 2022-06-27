@@ -8,4 +8,4 @@ pycodestyle==2.5.0
 pytz==2018.7
 PyYAML==5.1
 Pillow==6.0.0   
-reportlab==3.5.20
+reportlab==3.5.55
